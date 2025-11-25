@@ -3,9 +3,9 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import model.GenereDAO;
+import dao.GenereDAO;
 import model.Libro;
-import model.LibroDAO;
+import dao.LibroDAO;
 import model.Utente;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ public class AggiuntaLibroServlet extends HttpServlet {
 
         // se non admin o non loggato, rimbalzo alla home
         if (admin == null || !"Admin".equals(admin.getTipo())) {
-            resp.sendRedirect("unauthorized.jsp");
+            resp.sendRedirect("/Interface/unauthorized.jsp");
             return;
         }
             // al primo caricamento della pagina ho
@@ -31,10 +31,10 @@ public class AggiuntaLibroServlet extends HttpServlet {
         try {
             req.setAttribute("generi", genereDAO.findAll());
             //invio i generi alla pagina e la chiamo
-            req.getRequestDispatcher("aggiuntaLibro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/Interface/aggiuntaLibro.jsp").forward(req, resp);
         } catch (SQLException e) {
             e.printStackTrace();
-            resp.sendRedirect("errore.jsp");
+            resp.sendRedirect("/Interface/errore.jsp");
         }
     }
 
@@ -75,12 +75,12 @@ public class AggiuntaLibroServlet extends HttpServlet {
         if (errore != null) {
             req.setAttribute("errore", errore);
             req.setAttribute("generi", genereDAO.findAll()); // Riporta i generi nella pagina
-            req.getRequestDispatcher("aggiuntaLibro.jsp").forward(req, resp);
+            req.getRequestDispatcher("/Interface/aggiuntaLibro.jsp").forward(req, resp);
             return;
         }
     }catch (SQLException e) {
         e.printStackTrace();
-        resp.sendRedirect("home.jsp");
+        resp.sendRedirect("home");
         return;
     }
         // creo oggetto libro con tutti i dati del form

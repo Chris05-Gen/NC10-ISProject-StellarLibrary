@@ -1,5 +1,8 @@
 package controller;
 
+import dao.CarrelloDAO;
+import dao.ContieneDAO;
+import dao.UtenteDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;

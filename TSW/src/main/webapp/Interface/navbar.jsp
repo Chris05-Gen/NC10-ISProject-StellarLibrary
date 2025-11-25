@@ -103,25 +103,25 @@
     </div>
   </div>
 
-  <div class="header-2">
-    <div id="menu-btn" class="fas fa-bars"></div>
-    <nav class="navbar">
-      <a href="home">Home</a>
-      <c:if test="${not empty sessionScope.utente}">
-        <a href="VisualizzaOrdiniServlet">Ordini</a>
-      </c:if>
-      <a href="catalogo">Collezione</a>
-      <a href="VisualizzaCarrelloServlet">Carrello</a>
-      <c:if test="${sessionScope.utente.tipo == 'Admin'}">
-        <div class="dropdown2">
-          <a href="#" class="dropbtn">Dashboard</a>
-          <div class="dropdown2-content">
-            <a href="OrdiniUtentiServlet">Ordini utenti</a>
-            <a href="GestioneRecensioniServlet">Recensioni</a>
-            <a href="AggiuntaLibro">Aggiungi </a>
+    <div class="header-2">
+      <div id="menu-btn" class="fas fa-bars"></div>
+      <nav class="navbar">
+        <a href="home">Home</a>
+        <c:if test="${not empty sessionScope.utente}">
+          <a href="VisualizzaOrdiniServlet">Ordini</a>
+        </c:if>
+        <a href="catalogo">Collezione</a>
+        <a href="VisualizzaCarrelloServlet">Carrello</a>
+        <c:if test="${sessionScope.utente.tipo == 'Admin'}">
+          <div class="dropdown2">
+            <a href="#" class="dropbtn">Dashboard</a>
+            <div class="dropdown2-content">
+              <a href="controller/OrdiniUtentiServlet">Ordini utenti</a>
+              <a href="controller/GestioneRecensioniServlet">Recensioni</a>
+              <a href="controller/AggiuntaLibro">Aggiungi </a>
+            </div>
           </div>
-        </div>
-      </c:if>
+        </c:if>
 
     </nav>
   </div>

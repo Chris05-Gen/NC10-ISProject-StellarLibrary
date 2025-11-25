@@ -4,9 +4,9 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.Genere;
-import model.GenereDAO;
+import dao.GenereDAO;
 import model.Libro;
-import model.LibroDAO;
+import dao.LibroDAO;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -53,7 +53,7 @@ public class CatalogoServlet extends HttpServlet {
                 GenereDAO gdao = new GenereDAO();
                 List<Genere> generi = gdao.findAll();
                 request.setAttribute("generi", generi);
-                request.getRequestDispatcher("catalogo.jsp").forward(request, response);
+                request.getRequestDispatcher("/Interface/catalogo.jsp").forward(request, response);
                 return;
             }
             // se invece vengono passati i parametri si esegue la query con i parametri passati
@@ -69,7 +69,7 @@ public class CatalogoServlet extends HttpServlet {
             request.setAttribute("prezzoMin", prezzoMin);
             request.setAttribute("prezzoMax", prezzoMax);
 
-            request.getRequestDispatcher("catalogo.jsp").forward(request, response);
+            request.getRequestDispatcher("/Interface/catalogo.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new ServletException(e);
         }

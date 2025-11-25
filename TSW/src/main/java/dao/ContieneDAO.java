@@ -1,8 +1,9 @@
-package model;
+package dao;
 
 
 
 import model.Contiene;
+import utils.DBManager;
 
 import java.sql.*;
 import java.util.*;

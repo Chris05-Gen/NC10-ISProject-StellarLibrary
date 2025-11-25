@@ -4,7 +4,7 @@
     import jakarta.servlet.http.*;
     import jakarta.servlet.annotation.*;
     import model.Utente;
-    import model.UtenteDAO;
+    import dao.UtenteDAO;
 
     import java.io.IOException;
 

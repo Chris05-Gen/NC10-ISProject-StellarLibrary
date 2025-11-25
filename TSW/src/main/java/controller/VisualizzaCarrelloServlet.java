@@ -1,5 +1,8 @@
 package controller;
 
+import dao.CarrelloDAO;
+import dao.ContieneDAO;
+import dao.LibroDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -72,7 +75,7 @@ public class VisualizzaCarrelloServlet extends HttpServlet {
 
             request.setAttribute("carrelloItems", dettagliCarrello);
             request.setAttribute("totale", totale);
-            RequestDispatcher dispatcher = request.getRequestDispatcher("carrello.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/Interface/carrello.jsp");
             dispatcher.forward(request, response);
 
         } catch (SQLException e) {

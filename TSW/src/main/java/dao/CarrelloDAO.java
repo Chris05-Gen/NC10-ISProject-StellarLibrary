@@ -1,8 +1,9 @@
-package model;
+package dao;
 
 
 
 import model.Carrello;
+import utils.DBManager;
 
 import java.sql.*;
 

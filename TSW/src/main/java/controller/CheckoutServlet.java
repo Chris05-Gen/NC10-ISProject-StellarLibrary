@@ -1,5 +1,6 @@
 package controller;
 
+import dao.*;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -74,7 +75,7 @@ public class CheckoutServlet extends HttpServlet {
             request.setAttribute("totale", totale.doubleValue());
             request.setAttribute("indirizzi", indirizzi);
 
-            request.getRequestDispatcher("checkout.jsp").forward(request, response);
+            request.getRequestDispatcher("/Interface/checkout.jsp").forward(request, response);
 
         } catch (SQLException e) {
             e.printStackTrace();

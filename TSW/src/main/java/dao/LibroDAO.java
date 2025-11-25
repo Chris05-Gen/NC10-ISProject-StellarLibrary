@@ -1,4 +1,8 @@
-package model;
+package dao;
+
+import utils.DBManager;
+import model.Genere;
+import model.Libro;
 
 import java.sql.*;
 import java.util.*;

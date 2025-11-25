@@ -1,7 +1,8 @@
-package model;
+package dao;
 
 
 
+import utils.DBManager;
 import model.Indirizzo;
 
 import java.sql.*;

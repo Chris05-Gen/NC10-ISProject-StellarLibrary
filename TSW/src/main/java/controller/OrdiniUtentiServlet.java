@@ -1,5 +1,8 @@
 package controller;
 
+import dao.IndirizzoDAO;
+import dao.MetodoPagamentoDAO;
+import dao.OrdineDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -46,10 +49,10 @@ public class OrdiniUtentiServlet extends HttpServlet {
             }
             // invio i dati alla jsp tramite la richiesta
             request.setAttribute("ordiniUtenti", ordini);
-            request.getRequestDispatcher("ordiniUtenti.jsp").forward(request, response);
+            request.getRequestDispatcher("/Interface/ordiniUtenti.jsp").forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("errore.jsp");
+            response.sendRedirect("/Interface/errore.jsp");
         }
     }
 }

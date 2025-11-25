@@ -1,5 +1,8 @@
 package controller;
 
+import dao.IndirizzoDAO;
+import dao.MetodoPagamentoDAO;
+import dao.OrdineDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -50,7 +53,7 @@ public class VisualizzaOrdiniServlet extends HttpServlet {
             request.setAttribute("mappaPagamenti", mappaPagamenti);
             request.setAttribute("mappaIndirizzi", mappaIndirizzi);
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("ordini.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/Interface/ordini.jsp");
             dispatcher.forward(request, response);
 
         } catch (SQLException e) {
