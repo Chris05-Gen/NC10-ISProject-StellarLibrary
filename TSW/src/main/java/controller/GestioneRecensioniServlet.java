@@ -4,7 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.Recensione;
-import model.RecensioneDAO;
+import dao.RecensioneDAO;
 import model.Utente;
 
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class GestioneRecensioniServlet extends HttpServlet {
         try {
             List<Recensione> recensioni = recensioneDAO.getAllRecensioniConNomeUtente();
             request.setAttribute("recensioni", recensioni);
-            request.getRequestDispatcher("gestioneRecensioni.jsp").forward(request, response);
+            request.getRequestDispatcher("/Interface/gestioneRecensioni.jsp").forward(request, response);
         } catch (SQLException e) {
             e.printStackTrace();
             session.setAttribute("errore","Errore nell'accesso alle recensioni");

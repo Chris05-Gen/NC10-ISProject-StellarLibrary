@@ -4,7 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.WebServlet;
 import model.Recensione;
-import model.RecensioneDAO;
+import dao.RecensioneDAO;
 import model.Utente;
 
 import java.io.IOException;
@@ -60,7 +60,7 @@ public class AggiungiRecensioneServlet extends HttpServlet {
         if (errore != null) {
             request.setAttribute("errore", errore);
             request.setAttribute("isbn", isbn);
-            request.getRequestDispatcher("dettagliLibro.jsp").forward(request, response);
+            request.getRequestDispatcher("/Interface/dettagliLibro.jsp").forward(request, response);
             return;
         }
         // se dopo la validazione non ci sono errori crea un oggetto recensione

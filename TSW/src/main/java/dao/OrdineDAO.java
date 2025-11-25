@@ -1,7 +1,8 @@
-package model;
+package dao;
 
 
 
+import utils.DBManager;
 import model.Ordine;
 
 import java.sql.*;

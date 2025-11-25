@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import model.Libro;
-import model.LibroDAO;
+import dao.LibroDAO;
 import model.Recensione;
-import model.RecensioneDAO;
+import dao.RecensioneDAO;
 
 @WebServlet(name = "DettaglioLibroServlet", value = "/DettaglioLibroServlet")
 public class DettaglioLibroServlet extends HttpServlet {
@@ -37,11 +37,11 @@ public class DettaglioLibroServlet extends HttpServlet {
             request.setAttribute("libro", libro);
             request.setAttribute("recensioni", recensioni);
 
-            request.getRequestDispatcher("dettaglioLibro.jsp").forward(request, response);
+            request.getRequestDispatcher("/Interface/dettaglioLibro.jsp").forward(request, response);
 
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendRedirect("errore.jsp"); // log dettagliato lato server
+            response.sendRedirect("/Interface/errore.jsp"); // log dettagliato lato server
         }
     }
 }

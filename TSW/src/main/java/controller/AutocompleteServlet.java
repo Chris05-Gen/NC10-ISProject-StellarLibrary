@@ -4,12 +4,11 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.Libro;
-import model.LibroDAO;
+import dao.LibroDAO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 ;
 

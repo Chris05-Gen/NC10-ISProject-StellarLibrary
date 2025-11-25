@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 
-import model.LibroDAO;
+import dao.LibroDAO;
 import model.Libro;
 
 @WebServlet("/home") // o "/index", o "/start"
@@ -18,7 +18,7 @@ public class UltimiLibriServlet extends HttpServlet {
             LibroDAO dao = new LibroDAO();
             List<Libro> ultimiLibri = dao.findUltimi(6);
             request.setAttribute("ultimiLibri", ultimiLibri);
-            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("Interface/index.jsp");
             rd.forward(request, response);
         } catch (Exception e) {
             throw new ServletException(e);

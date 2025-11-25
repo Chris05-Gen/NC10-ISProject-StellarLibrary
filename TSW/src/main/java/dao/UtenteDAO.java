@@ -1,7 +1,8 @@
-package model;
+package dao;
 
 
 
+import utils.DBManager;
 import model.Utente;
 
 import java.nio.charset.StandardCharsets;

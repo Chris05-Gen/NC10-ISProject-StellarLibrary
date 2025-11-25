@@ -1,6 +1,7 @@
-package model;
+package dao;
 
 
+import utils.DBManager;
 import model.MetodoPagamento;
 
 import java.sql.*;

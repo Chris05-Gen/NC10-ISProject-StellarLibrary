@@ -4,8 +4,8 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.Carrello;
-import model.CarrelloDAO;
-import model.ContieneDAO;
+import dao.CarrelloDAO;
+import dao.ContieneDAO;
 import model.Utente;
 
 import java.io.IOException;
