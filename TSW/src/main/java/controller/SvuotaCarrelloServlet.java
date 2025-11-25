@@ -1,47 +1,38 @@
 package controller;
 
-import dao.CarrelloDAO;
-import dao.ContieneDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import model.*;
+import model.Carrello;
+import model.Utente;
+import service.CarrelloService;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 @WebServlet("/SvuotaCarrelloServlet")
 public class SvuotaCarrelloServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
+    private final CarrelloService carrelloService = new CarrelloService();
 
-        CarrelloDAO carrelloDAO = new CarrelloDAO();
-        ContieneDAO contieneDAO = new ContieneDAO();
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Utente utente = (Utente) session.getAttribute("utente");
 
         try {
-            Utente utente = (Utente) session.getAttribute("utente");
-            int carrelloId;
-            // Utente Loggato : recupero carrello con idUtente dal DB
-            if (utente != null) {
-                Carrello carrello = carrelloDAO.findByUtenteId(utente.getId());
-                carrelloId = carrello.getId();
-            } // Utente GUest : recupero il carrello con carrelloId salvato in sessione
-            else {
-                Integer id = (Integer) session.getAttribute("carrelloId");
-                if (id == null) {
-                    response.sendRedirect("VisualizzaCarrelloServlet");
-                    return;
-                }
-                carrelloId = id;
+            Carrello carrello = carrelloService.getOrCreateCarrello(utente, session);
+
+            if (carrello == null || carrello.getId() == -1) {
+                response.sendRedirect("VisualizzaCarrelloServlet");
+                return;
             }
 
-            contieneDAO.svuotaCarrello(carrelloId);
+            carrelloService.svuotaCarrello(carrello);
             session.setAttribute("successo", "Carrello svuotato con successo!");
-            response.sendRedirect("VisualizzaCarrelloServlet");     
+            response.sendRedirect("VisualizzaCarrelloServlet");
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Errore durante lo svuotamento del carrello");
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Errore durante lo svuotamento del carrello");
         }
     }
 }
