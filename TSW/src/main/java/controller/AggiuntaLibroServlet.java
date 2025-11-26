@@ -3,37 +3,32 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import dao.GenereDAO;
 import model.Libro;
-import dao.LibroDAO;
+import model.Genere;
 import model.Utente;
+import service.GestioneCatalogoService;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet("/AggiuntaLibro")
 public class AggiuntaLibroServlet extends HttpServlet {
-    private final LibroDAO libroDAO = new LibroDAO();
-    private final GenereDAO genereDAO = new GenereDAO();
+    private final GestioneCatalogoService catalogoService = new GestioneCatalogoService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Utente admin = (Utente) req.getSession().getAttribute("utente");
 
-        // se non admin o non loggato, rimbalzo alla home
         if (admin == null || !"Admin".equals(admin.getTipo())) {
             resp.sendRedirect("/Interface/unauthorized.jsp");
             return;
         }
-            // al primo caricamento della pagina ho
-        // la necessità di recuperare tutti i generi dal db, per poter quindi inserire un libro
         try {
-            req.setAttribute("generi", genereDAO.findAll());
-            //invio i generi alla pagina e la chiamo
+            List<Genere> generi = catalogoService.getAllGeneri();
+            req.setAttribute("generi", generi);
             req.getRequestDispatcher("/Interface/aggiuntaLibro.jsp").forward(req, resp);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
             resp.sendRedirect("/Interface/errore.jsp");
         }
     }
@@ -52,7 +47,6 @@ public class AggiuntaLibroServlet extends HttpServlet {
 
         String errore = null;
 
-        // recupero tutti i dati dal form e determino la loro validità
         if (isbn == null || !isbn.matches("\\d{10,13}")) {
             errore = "ISBN non valido.";
         } else if (titolo == null || titolo.isBlank()) {
@@ -68,41 +62,37 @@ public class AggiuntaLibroServlet extends HttpServlet {
         } else if (genereRaw == null || !genereRaw.matches("\\d+")) {
             errore = "Genere non selezionato.";
         }
-    try {
-        // qualora ci fosse un errore lo segnalo,
-        // ma comunque recupero i generi per far rimanere
-        // la pagina di aggiunta coerente e funzionante
-        if (errore != null) {
-            req.setAttribute("errore", errore);
-            req.setAttribute("generi", genereDAO.findAll()); // Riporta i generi nella pagina
-            req.getRequestDispatcher("/Interface/aggiuntaLibro.jsp").forward(req, resp);
+
+        try {
+            if (errore != null) {
+                List<Genere> generi = catalogoService.getAllGeneri();
+                req.setAttribute("errore", errore);
+                req.setAttribute("generi", generi);
+                req.getRequestDispatcher("/Interface/aggiuntaLibro.jsp").forward(req, resp);
+                return;
+            }
+        } catch (Exception e) {
+            resp.sendRedirect("home");
             return;
         }
-    }catch (SQLException e) {
-        e.printStackTrace();
-        resp.sendRedirect("home");
-        return;
-    }
-        // creo oggetto libro con tutti i dati del form
-    Libro l = new Libro();
-        l.setIsbn(req.getParameter("isbn"));
-        l.setTitolo(req.getParameter("titolo"));
-        l.setAutore(req.getParameter("autore"));
-        l.setCasaEditrice(req.getParameter("casaEditrice"));
-        l.setPagine(Integer.parseInt(req.getParameter("pagine")));
-        l.setCopertina(req.getParameter("copertina"));
-        l.setAnnoPubblicazione(Integer.parseInt(req.getParameter("annoPubblicazione")));
-        l.setPrezzo(new BigDecimal(req.getParameter("prezzo")));
-        l.setIdGenere(Integer.parseInt(req.getParameter("idGenere")));
 
+        Libro l = new Libro();
+        l.setIsbn(isbn);
+        l.setTitolo(titolo);
+        l.setAutore(autore);
+        l.setCasaEditrice(casaEditrice);
+        l.setPagine(Integer.parseInt(pagineRaw));
+        l.setCopertina(copertina);
+        l.setAnnoPubblicazione(Integer.parseInt(annoRaw));
+        l.setPrezzo(new BigDecimal(prezzoRaw));
+        l.setIdGenere(Integer.parseInt(genereRaw));
 
-        // lo creo nel DB, e ricarico
-        // la pagina di aggiunta libro, segnalando che l'aggiunta è stata fatta con successo
         try {
-            libroDAO.create(l);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            resp.sendRedirect("home");
+            catalogoService.creaLibro(l);
+        } catch (Exception e) {
+            HttpSession session = req.getSession();
+            session.setAttribute("erroreLibro", "Errore nell'inserimento del libro");
+            resp.sendRedirect("AggiuntaLibro");
             return;
         }
         resp.sendRedirect("AggiuntaLibro?success=1");

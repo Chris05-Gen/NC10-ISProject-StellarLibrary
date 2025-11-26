@@ -17,8 +17,12 @@
   <c:if test="${param.success == '1'}">
     <p class="success">Libro aggiunto con successo 🎉</p>
   </c:if>
-  <c:if test="${not empty errore}">
-    <div class="toast error-toast">${errore}</div>
+  <c:if test="${not empty erroreLibro}">
+    <div class="toast error-toast" id="login-toast">
+      <span>${erroreLibro}</span>
+      <i class="fas fa-times close-toast" onclick="document.getElementById('login-toast').style.display='none'"></i>
+    </div>
+    <c:remove var="erroreLibro" scope="session" />
   </c:if>
   <form method="post" action="AggiuntaLibro">
     <div class="form-group">
