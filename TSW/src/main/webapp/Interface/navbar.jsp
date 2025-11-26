@@ -116,9 +116,9 @@
           <div class="dropdown2">
             <a href="#" class="dropbtn">Dashboard</a>
             <div class="dropdown2-content">
-              <a href="controller/OrdiniUtentiServlet">Ordini utenti</a>
-              <a href="controller/GestioneRecensioniServlet">Recensioni</a>
-              <a href="controller/AggiuntaLibro">Aggiungi </a>
+              <a href="OrdiniUtentiServlet">Ordini utenti</a>
+              <a href="GestioneRecensioniServlet">Recensioni</a>
+              <a href="AggiuntaLibro">Aggiungi </a>
             </div>
           </div>
         </c:if>
