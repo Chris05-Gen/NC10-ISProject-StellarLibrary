@@ -126,4 +126,38 @@ public class CarrelloService {
             throw new RuntimeException("Errore durante lo svuotamento del carrello", e);
         }
     }
+
+    public void unisciCarrelloGuestConUtente(Integer guestCarrelloId, Utente utente) {
+        if (guestCarrelloId == null || utente == null) return;
+
+        try {
+            Carrello carrelloUtente = carrelloDAO.findByUtenteId(utente.getId());
+
+            if (carrelloUtente == null) {
+                // utente non ha carrello: assegna direttamente quello guest
+                carrelloDAO.assegnaCarrelloAUtente(guestCarrelloId, utente.getId());
+            } else {
+                // fusione contenuti
+                List<Contiene> guestContenuti = contieneDAO.getContenuto(guestCarrelloId);
+                List<Contiene> userContenuti = contieneDAO.getContenuto(carrelloUtente.getId());
+
+                Map<String, Integer> userQuantita = new HashMap<>();
+                for (Contiene c : userContenuti) {
+                    userQuantita.put(c.getIsbn(), c.getQuantita());
+                }
+
+                for (Contiene g : guestContenuti) {
+                    int nuovaQuantita = g.getQuantita();
+                    if (userQuantita.containsKey(g.getIsbn())) {
+                        nuovaQuantita += userQuantita.get(g.getIsbn());
+                    }
+                    contieneDAO.aggiungiLibro(carrelloUtente.getId(), g.getIsbn(), nuovaQuantita);
+                }
+
+                carrelloDAO.eliminaCarrelloGuest(guestCarrelloId);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Errore nella fusione dei carrelli", e);
+        }
+    }
 }
