@@ -3,6 +3,7 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.WebServlet;
+import model.Libro;
 import model.Recensione;
 import model.Utente;
 import service.GestioneRecensioniService;
@@ -65,7 +66,20 @@ public class AggiungiRecensioneServlet extends HttpServlet {
         }
 
         Date data = Date.valueOf(LocalDate.now());
-        Recensione recensione = new Recensione(0, idUtente, isbn, titolo, testo, valutazione, data);
+        // ✅ creo un Libro "leggero" con solo ISBN
+        Libro libro = new Libro();
+        libro.setIsbn(isbn);
+
+// ✅ costruisco Recensione con gli oggetti, non con gli id
+        Recensione recensione = new Recensione(
+                0,
+                utente,     // ✅ oggetto Utente
+                libro,      // ✅ oggetto Libro
+                titolo,
+                testo,
+                valutazione,
+                data
+        );
 
         try {
             recensioniService.aggiungiRecensione(recensione);

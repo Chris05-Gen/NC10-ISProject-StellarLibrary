@@ -1,31 +1,38 @@
 package model;
 
-
-
 import java.sql.Date;
 
 public class Recensione {
+
     private int id;
-    private int idUtente;
-    private String isbn;
+
+    // ✅ riferimenti UML
+    private Utente utente;   // scrive
+    private Libro libro;     // riguarda
+
     private String titolo;
     private String testo;
     private int valutazione;
     private Date data;
-    private String nomeUtente;
 
+    // campo derivato (utile per la view)
+    private String nomeUtente;
 
     public Recensione() {}
 
-    public Recensione(int id, int idUtente, String isbn, String titolo, String testo, int valutazione, Date data) {
+    public Recensione(int id, Utente utente, Libro libro,
+                      String titolo, String testo,
+                      int valutazione, Date data) {
         this.id = id;
-        this.idUtente = idUtente;
-        this.isbn = isbn;
+        this.utente = utente;
+        this.libro = libro;
         this.titolo = titolo;
         this.testo = testo;
         this.valutazione = valutazione;
         this.data = data;
     }
+
+    // ===== GETTER & SETTER =====
 
     public int getId() {
         return id;
@@ -35,20 +42,20 @@ public class Recensione {
         this.id = id;
     }
 
-    public int getIdUtente() {
-        return idUtente;
+    public Utente getUtente() {
+        return utente;
     }
 
-    public void setIdUtente(int idUtente) {
-        this.idUtente = idUtente;
+    public void setUtente(Utente utente) {
+        this.utente = utente;
     }
 
-    public String getIsbn() {
-        return isbn;
+    public Libro getLibro() {
+        return libro;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public void setLibro(Libro libro) {
+        this.libro = libro;
     }
 
     public String getTitolo() {
@@ -82,6 +89,7 @@ public class Recensione {
     public void setData(Date data) {
         this.data = data;
     }
+
     public String getNomeUtente() {
         return nomeUtente;
     }
@@ -89,6 +97,4 @@ public class Recensione {
     public void setNomeUtente(String nomeUtente) {
         this.nomeUtente = nomeUtente;
     }
-    // Getters & Setters
 }
-
