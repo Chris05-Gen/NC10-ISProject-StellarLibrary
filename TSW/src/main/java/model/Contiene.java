@@ -1,26 +1,25 @@
+// model/Contiene.java
 package model;
 
-
 public class Contiene {
-    private int idCarrello;
-    private String isbn;
+    private Carrello carrello;
+    private Libro libro;
     private int quantita;
 
-    public Contiene() {}
+    public Contiene() { }
 
-    public Contiene(int idCarrello, String isbn, int quantita) {
-        this.idCarrello = idCarrello;
-        this.isbn = isbn;
+    public Contiene(Carrello carrello, Libro libro, int quantita) {
+        this.carrello = carrello;
+        this.libro = libro;
         this.quantita = quantita;
     }
 
-    public int getIdCarrello() { return idCarrello; }
-    public void setIdCarrello(int idCarrello) { this.idCarrello = idCarrello; }
+    public Carrello getCarrello() { return carrello; }
+    public void setCarrello(Carrello carrello) { this.carrello = carrello; }
 
-    public String getIsbn() { return isbn; }
-    public void setIsbn(String isbn) { this.isbn = isbn; }
+    public Libro getLibro() { return libro; }
+    public void setLibro(Libro libro) { this.libro = libro; }
 
     public int getQuantita() { return quantita; }
     public void setQuantita(int quantita) { this.quantita = quantita; }
 }
-
