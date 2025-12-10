@@ -6,18 +6,27 @@ import model.Recensione;
 import java.util.List;
 
 public class GestioneRecensioniService {
+
     private final RecensioneDAO recensioneDAO = new RecensioneDAO();
 
-    // Aggiunge una recensione al database
+    // ✅ Aggiunge una recensione al database
+    // Ora la Recensione deve contenere:
+    // - recensione.getUtente()
+    // - recensione.getLibro()
     public void aggiungiRecensione(Recensione recensione) {
         try {
+            if (recensione.getUtente() == null || recensione.getLibro() == null) {
+                throw new IllegalArgumentException("Recensione senza Utente o Libro associato");
+            }
+
             recensioneDAO.addRecensione(recensione);
+
         } catch (Exception e) {
             throw new RuntimeException("Errore durante l'aggiunta della recensione", e);
         }
     }
 
-    // Recupera tutte le recensioni con nome utente (solo admin)
+    // ✅ Recupera tutte le recensioni con nome utente (solo admin)
     public List<Recensione> getAllRecensioniConNomeUtente() {
         try {
             return recensioneDAO.getAllRecensioniConNomeUtente();
@@ -26,7 +35,7 @@ public class GestioneRecensioniService {
         }
     }
 
-    // Elimina la recensione tramite ID
+    // ✅ Elimina la recensione tramite ID
     public void eliminaRecensione(int idRecensione) {
         try {
             recensioneDAO.deleteRecensioneById(idRecensione);
@@ -35,6 +44,10 @@ public class GestioneRecensioniService {
         }
     }
 
+    // ✅ Recupera le recensioni di un libro tramite ISBN
+    // Restituisce Recensione con:
+    // - Utente valorizzato
+    // - Libro valorizzato (almeno con ISBN)
     public List<Recensione> getRecensioniByLibro(String isbn) {
         try {
             return recensioneDAO.getByLibro(isbn);
@@ -43,4 +56,3 @@ public class GestioneRecensioniService {
         }
     }
 }
-

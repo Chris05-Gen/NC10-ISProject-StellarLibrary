@@ -38,9 +38,9 @@
                 <tbody>
                 <c:forEach var="r" items="${recensioni}">
                     <tr>
-                        <td>${r.id}</td>
+                        <td>${r.utente.id}</td>
                         <td>${r.nomeUtente}</td>
-                        <td>${r.isbn}</td>
+                        <td>${r.libro.isbn}</td>
                         <td>${r.titolo}</td>
                         <td>${r.testo}</td>
                         <td>${r.valutazione}/5</td>

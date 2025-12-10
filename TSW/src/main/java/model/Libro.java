@@ -1,6 +1,8 @@
 package model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Libro {
     private String isbn;
@@ -11,9 +13,21 @@ public class Libro {
     private String copertina;
     private int annoPubblicazione;
     private BigDecimal prezzo;
-    private int idGenere;  // Foreign key verso tabella Genere
 
-    private Genere genere;
+    private int idGenere;       // FK DB
+    private Genere genere;      // riferimento OO
+
+    // ✅ relazione UML: un libro ha più recensioni
+    private List<Recensione> recensioni = new ArrayList<>();
+
+    public List<Recensione> getRecensioni() {
+        return recensioni;
+    }
+
+    public void addRecensione(Recensione r) {
+        recensioni.add(r);
+        r.setLibro(this);
+    }
     public Genere getGenere() { return genere; }
     public void setGenere(Genere genere) { this.genere = genere; }
     // === GETTER & SETTER ===
