@@ -2,6 +2,7 @@ package dao;
 
 
 
+import model.Utente;
 import utils.DBManager;
 import model.Indirizzo;
 
@@ -16,7 +17,7 @@ public class IndirizzoDAO {
         String sql = "INSERT INTO indirizzo (IDUtente, Via, Citta, CAP, Provincia, Nazione, Telefono) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, indirizzo.getIdUtente());
+            stmt.setInt(1, indirizzo.getUtente().getId());
             stmt.setString(2, indirizzo.getVia());
             stmt.setString(3, indirizzo.getCitta());
             stmt.setString(4, indirizzo.getCap());
@@ -35,9 +36,12 @@ public class IndirizzoDAO {
             stmt.setInt(1, idUtente);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
+                Utente u = new Utente();
+                u.setId(rs.getInt("IDUtente"));
+
                 Indirizzo i = new Indirizzo();
                 i.setId(rs.getInt("ID"));
-                i.setIdUtente(rs.getInt("IDUtente"));
+                i.setUtente(u);
                 i.setVia(rs.getString("Via"));
                 i.setCitta(rs.getString("Citta"));
                 i.setCap(rs.getString("CAP"));
@@ -58,9 +62,12 @@ public class IndirizzoDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
+                Utente u = new Utente();
+                u.setId(rs.getInt("IDUtente"));
+
                 return new Indirizzo(
                         rs.getInt("ID"),
-                        rs.getInt("IDUtente"),
+                        u,
                         rs.getString("Via"),
                         rs.getString("Citta"),
                         rs.getString("CAP"),
@@ -68,6 +75,7 @@ public class IndirizzoDAO {
                         rs.getString("Nazione"),
                         rs.getString("Telefono")
                 );
+
             }
         }
         return null;

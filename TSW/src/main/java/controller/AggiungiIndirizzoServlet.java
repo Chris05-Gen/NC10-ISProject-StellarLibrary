@@ -27,7 +27,7 @@ public class AggiungiIndirizzoServlet extends HttpServlet {
 
         //recupero tutti i dati dal form, per inizializzare un oggetto indirizzo
         Indirizzo nuovo = new Indirizzo();
-        nuovo.setIdUtente(utente.getId());
+        nuovo.setUtente(utente);
         nuovo.setVia(request.getParameter("via"));
         nuovo.setCitta(request.getParameter("citta"));
         nuovo.setCap(request.getParameter("cap"));

@@ -2,6 +2,9 @@ package dao;
 
 
 
+import model.Indirizzo;
+import model.MetodoPagamento;
+import model.Utente;
 import utils.DBManager;
 import model.Ordine;
 
@@ -15,14 +18,20 @@ public class OrdineDAO {
     private final DBManager db = DBManager.getInstance();
 
     public int creaOrdine(Ordine ordine) throws SQLException {
-        String sql = "INSERT INTO ordine (IDUtente, IDIndirizzo, IDMetodoPagamento, Totale) VALUES (?, ?, ?, ?)";
+
+        String sql = """
+        INSERT INTO ordine (IDUtente, IDIndirizzo, IDMetodoPagamento, Totale)
+        VALUES (?, ?, ?, ?)
+    """;
+
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            stmt.setInt(1, ordine.getIdUtente());
-            stmt.setInt(2, ordine.getIdIndirizzo());
-            stmt.setInt(3, ordine.getIdMetodoPagamento());
+            stmt.setInt(1, ordine.getUtente().getId());
+            stmt.setInt(2, ordine.getIndirizzo().getId());
+            stmt.setInt(3, ordine.getMetodoPagamento().getId());
             stmt.setBigDecimal(4, ordine.getTotale());
+
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();
@@ -31,58 +40,109 @@ public class OrdineDAO {
         return -1;
     }
 
+
     public List<Ordine> getOrdiniByUtente(int idUtente) throws SQLException {
+
         List<Ordine> list = new ArrayList<>();
+
         String sql = "SELECT * FROM ordine WHERE IDUtente = ?";
+
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, idUtente);
             ResultSet rs = stmt.executeQuery();
+
             while (rs.next()) {
-                list.add(new Ordine(
+
+                Utente u = new Utente();
+                u.setId(rs.getInt("IDUtente"));
+
+                Indirizzo i = new Indirizzo();
+                i.setId(rs.getInt("IDIndirizzo"));
+
+                MetodoPagamento m = new MetodoPagamento();
+                m.setId(rs.getInt("IDMetodoPagamento"));
+
+                Ordine o = new Ordine(
                         rs.getInt("ID"),
-                        rs.getInt("IDUtente"),
-                        rs.getInt("IDIndirizzo"),
-                        rs.getInt("IDMetodoPagamento"),
+                        u,
+                        i,
+                        m,
                         rs.getTimestamp("DataOrdine"),
                         rs.getBigDecimal("Totale")
-                ));
+                );
+
+                list.add(o);
             }
         }
+
         return list;
     }
-    public List<Map<String, Object>> getOrdiniConUtente() throws SQLException {
-        List<Map<String, Object>> ordini = new ArrayList<>();
+
+    public List<Ordine> getOrdiniConUtente() throws SQLException {
+
+        List<Ordine> ordini = new ArrayList<>();
+
         String sql = """
-        SELECT o.ID, o.IDUtente, o.IDIndirizzo, o.IDMetodoPagamento, o.DataOrdine, o.Totale,
-               u.Nome, u.Cognome
+        SELECT o.*, 
+               u.ID AS uid, u.Nome, u.Cognome,
+               i.ID AS iid, i.Via, i.CAP, i.Citta, i.Provincia, i.Nazione, i.Telefono,
+               m.ID AS mid, m.Tipo, m.Circuito, m.Descrizione
         FROM ordine o
         JOIN utente u ON o.IDUtente = u.ID
+        JOIN indirizzo i ON o.IDIndirizzo = i.ID
+        JOIN metodopagamento m ON o.IDMetodoPagamento = m.ID
         ORDER BY o.DataOrdine DESC
-        """;
+    """;
 
         try (Connection conn = db.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Map<String, Object> riga = new HashMap<>();
-                riga.put("id", rs.getInt("ID"));
-                riga.put("idUtente", rs.getInt("IDUtente"));
-                riga.put("idIndirizzo", rs.getInt("IDIndirizzo"));
-                riga.put("idMetodoPagamento", rs.getInt("IDMetodoPagamento"));
-                riga.put("dataOrdine", rs.getTimestamp("DataOrdine"));
-                riga.put("totale", rs.getBigDecimal("Totale"));
-                riga.put("nome", rs.getString("Nome"));
-                riga.put("cognome", rs.getString("Cognome"));
 
-                ordini.add(riga);
+                // ✅ UTENTE
+                Utente utente = new Utente();
+                utente.setId(rs.getInt("uid"));
+                utente.setNome(rs.getString("Nome"));
+                utente.setCognome(rs.getString("Cognome"));
+
+                // ✅ INDIRIZZO
+                Indirizzo indirizzo = new Indirizzo();
+                indirizzo.setId(rs.getInt("iid"));
+                indirizzo.setVia(rs.getString("Via"));
+                indirizzo.setCap(rs.getString("CAP"));
+                indirizzo.setCitta(rs.getString("Citta"));
+                indirizzo.setProvincia(rs.getString("Provincia"));
+                indirizzo.setNazione(rs.getString("Nazione"));
+                indirizzo.setTelefono(rs.getString("Telefono"));
+                indirizzo.setUtente(utente);
+
+                // ✅ METODO PAGAMENTO
+                MetodoPagamento metodo = new MetodoPagamento();
+                metodo.setId(rs.getInt("mid"));
+                metodo.setTipo(rs.getString("Tipo"));
+                metodo.setCircuito(rs.getString("Circuito"));
+                metodo.setDescrizione(rs.getString("Descrizione"));
+
+                // ✅ ORDINE UML COMPLETO
+                Ordine ordine = new Ordine(
+                        rs.getInt("ID"),
+                        utente,
+                        indirizzo,
+                        metodo,
+                        rs.getTimestamp("DataOrdine"),
+                        rs.getBigDecimal("Totale")
+                );
+
+                ordini.add(ordine);
             }
-
         }
 
         return ordini;
     }
+
 
 
 }
