@@ -86,12 +86,24 @@ public class GestioneOrdiniService {
     public BigDecimal calcolaTotaleOrdine(List<Contiene> items) {
         try {
             BigDecimal totale = BigDecimal.ZERO;
+
             for (Contiene c : items) {
-                BigDecimal prezzo = libroDAO.getPrezzoByIsbn(c.getIsbn());
+                Libro libro = c.getLibro();
+                if (libro == null) {
+                    throw new IllegalStateException("Elemento Contiene senza Libro associato");
+                }
+
+                BigDecimal prezzo = libro.getPrezzo();
+                if (prezzo == null) {
+                    // se il DAO di Contiene non ti popola il prezzo del libro
+                    prezzo = libroDAO.getPrezzoByIsbn(libro.getIsbn());
+                }
+
                 BigDecimal sub = prezzo.multiply(BigDecimal.valueOf(c.getQuantita()));
                 totale = totale.add(sub);
             }
             return totale;
+
         } catch (Exception e) {
             throw new RuntimeException("Errore nel calcolo del totale ordine", e);
         }
