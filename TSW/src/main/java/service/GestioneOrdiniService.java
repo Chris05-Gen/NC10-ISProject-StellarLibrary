@@ -29,7 +29,7 @@ public class GestioneOrdiniService {
         try {
             Map<Integer, MetodoPagamento> mappa = new HashMap<>();
             for (Ordine ordine : ordini) {
-                MetodoPagamento pagamento = pagamentoDAO.getMetodoById(ordine.getIdMetodoPagamento());
+                MetodoPagamento pagamento = pagamentoDAO.getMetodoById(ordine.getMetodoPagamento().getId());
                 mappa.put(ordine.getId(), pagamento);
             }
             return mappa;
@@ -42,7 +42,7 @@ public class GestioneOrdiniService {
         try {
             Map<Integer, Indirizzo> mappa = new HashMap<>();
             for (Ordine ordine : ordini) {
-                Indirizzo indirizzo = indirizzoDAO.getIndirizzoById(ordine.getIdIndirizzo());
+                Indirizzo indirizzo = indirizzoDAO.getIndirizzoById(ordine.getIndirizzo().getId());
                 mappa.put(ordine.getId(), indirizzo);
             }
             return mappa;
@@ -109,15 +109,23 @@ public class GestioneOrdiniService {
         }
     }
 
-    public int creaOrdine(int idUtente, int idIndirizzo, int idMetodo, BigDecimal totale) {
+    public int creaOrdine(Utente utente, Indirizzo indirizzo,
+                          MetodoPagamento metodo, BigDecimal totale) {
         try {
-            Ordine ordine = new Ordine(0, idUtente, idIndirizzo, idMetodo,
-                    new Timestamp(System.currentTimeMillis()), totale);
+            Ordine ordine = new Ordine(
+                    0,
+                    utente,
+                    indirizzo,
+                    metodo,
+                    new Timestamp(System.currentTimeMillis()),
+                    totale
+            );
             return ordineDAO.creaOrdine(ordine);
         } catch (Exception e) {
             throw new RuntimeException("Errore nella creazione dell'ordine", e);
         }
     }
+
 
     public void svuotaCarrello(int idCarrello) {
         try {
@@ -142,4 +150,30 @@ public class GestioneOrdiniService {
             throw new RuntimeException("Errore nel recupero dei metodi di pagamento", e);
         }
     }
+
+    // ✅ Recupero indirizzo per ID (per creazione ordine UML)
+    public Indirizzo getIndirizzoById(int id) {
+        try {
+            return indirizzoDAO.getIndirizzoById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Errore nel recupero dell'indirizzo", e);
+        }
+    }
+
+    // ✅ Recupero metodo pagamento per ID (per creazione ordine UML)
+    public MetodoPagamento getMetodoPagamentoById(int id) {
+        try {
+            return pagamentoDAO.getMetodoById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Errore nel recupero del metodo di pagamento", e);
+        }
+    }
+    public List<Ordine> getOrdiniConUtente() {
+        try {
+            return ordineDAO.getOrdiniConUtente();
+        } catch (Exception e) {
+            throw new RuntimeException("Errore recupero ordini admin", e);
+        }
+    }
+
 }

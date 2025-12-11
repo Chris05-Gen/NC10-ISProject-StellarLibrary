@@ -37,7 +37,7 @@
                 <c:forEach var="o" items="${ordiniUtenti}">
                     <tr>
                         <td>${o.id}</td>
-                        <td>${o.nome} ${o.cognome}</td>
+                        <td>${o.utente.nome} ${o.utente.cognome}</td>
                         <td><fmt:formatDate value="${o.dataOrdine}" pattern="dd/MM/yyyy HH:mm"/></td>
                         <td>€ ${o.totale}</td>
                         <td>${o.indirizzo.via}, ${o.indirizzo.cap} ${o.indirizzo.citta} (${o.indirizzo.provincia})</td>

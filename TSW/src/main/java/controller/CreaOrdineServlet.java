@@ -3,9 +3,7 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import model.Carrello;
-import model.Contiene;
-import model.Utente;
+import model.*;
 import service.GestioneOrdiniService;
 
 import java.io.IOException;
@@ -69,15 +67,29 @@ public class CreaOrdineServlet extends HttpServlet {
             }
 
             BigDecimal totale = ordiniService.calcolaTotaleOrdine(items);
-            int nuovoId = ordiniService.creaOrdine(u.getId(), idIndirizzo, idMetodo, totale);
+
+            // ✅ RECUPERO OGGETTI REALI (UML)
+            Indirizzo indirizzo = ordiniService.getIndirizzoById(idIndirizzo);
+            MetodoPagamento metodo = ordiniService.getMetodoPagamentoById(idMetodo);
+
+            // ✅ CREAZIONE ORDINE UML-COMPLIANT
+            int nuovoId = ordiniService.creaOrdine(
+                    u,
+                    indirizzo,
+                    metodo,
+                    totale
+            );
+
             ordiniService.svuotaCarrello(carrello.getId());
 
             session.setAttribute("successo", "Acquisto effettuato! Ordine #" + nuovoId);
             response.sendRedirect("home");
 
         } catch (Exception e) {
-            session.setAttribute("errore", "Errore DB indirizzo");
+            e.printStackTrace();
+            session.setAttribute("errore", "Errore durante la creazione dell'ordine.");
             response.sendRedirect("home");
         }
+
     }
 }

@@ -1,5 +1,6 @@
 package dao;
 
+import model.Carrello;
 import model.Contiene;
 import model.Libro;
 import utils.DBManager;
@@ -50,8 +51,12 @@ public class ContieneDAO {
                     libro.setPrezzo(rs.getBigDecimal("prezzo"));
                     libro.setCopertina(rs.getString("Copertina"));
 
+                    Carrello carrello = new Carrello();
+                    carrello.setId(rs.getInt("IDCarrello"));
+
                     Contiene contiene = new Contiene();
                     contiene.setLibro(libro);
+                    contiene.setCarrello(carrello);
                     contiene.setQuantita(rs.getInt("Quantita"));
 
                     risultati.add(contiene);
