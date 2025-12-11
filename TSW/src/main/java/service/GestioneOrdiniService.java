@@ -169,11 +169,25 @@ public class GestioneOrdiniService {
         }
     }
     public List<Ordine> getOrdiniConUtente() {
+
         try {
-            return ordineDAO.getOrdiniConUtente();
+            List<Ordine> ordini = ordineDAO.getOrdiniConUtente();
+
+            if (ordini == null) {
+                throw new IllegalStateException("Il DAO ha restituito null invece di una lista.");
+            }
+
+            return ordini;
+
+        } catch (IllegalStateException e) {
+            // Violazione di contratto lato DAO
+            throw e;
+
         } catch (Exception e) {
-            throw new RuntimeException("Errore recupero ordini admin", e);
+            // Errore generico di accesso ai dati
+            throw new RuntimeException("Errore durante il recupero degli ordini con utenti.", e);
         }
     }
+
 
 }

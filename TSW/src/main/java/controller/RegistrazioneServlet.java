@@ -10,8 +10,10 @@ import java.io.IOException;
 
 @WebServlet("/RegistrazioneServlet")
 public class RegistrazioneServlet extends HttpServlet {
+
     private final RegistrazioneService registrazioneService = new RegistrazioneService();
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -20,33 +22,18 @@ public class RegistrazioneServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        String errore = null;
-
-        if (nome == null || nome.trim().isEmpty()) {
-            errore = "Il nome è obbligatorio.";
-        } else if (cognome == null || cognome.trim().isEmpty()) {
-            errore = "Il cognome è obbligatorio.";
-        } else if (email == null || !email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            errore = "Email non valida.";
-        } else if (password == null || password.length() < 6) {
-            errore = "La password deve essere di almeno 6 caratteri.";
-        }
-
-        if (errore != null) {
-            request.setAttribute("errore", errore);
-            request.getRequestDispatcher("home").forward(request, response);
-            return;
-        }
-
         try {
-            boolean emailEsistente = registrazioneService.emailEsistente(email);
+            // 1. Validazione secondo il contratto del Service
+            registrazioneService.validaDatiRegistrazione(nome, cognome, email, password);
 
-            if (emailEsistente) {
-                request.setAttribute("errore", "Email già registrata");
+            // 2. Verifica che l'email non sia già registrata
+            if (registrazioneService.emailEsistente(email)) {
+                request.setAttribute("errore", "Email già registrata.");
                 request.getRequestDispatcher("home").forward(request, response);
                 return;
             }
 
+            // 3. Creazione dell'oggetto Utente
             Utente nuovoUtente = new Utente();
             nuovoUtente.setNome(nome);
             nuovoUtente.setCognome(cognome);
@@ -54,17 +41,27 @@ public class RegistrazioneServlet extends HttpServlet {
             nuovoUtente.setPassword(password);
             nuovoUtente.setTipo("Cliente");
 
+            // 4. Registrazione
             registrazioneService.registraUtente(nuovoUtente);
 
+            // 5. Login automatico dopo la registrazione
             Utente registrato = registrazioneService.login(email, password);
+
             HttpSession session = request.getSession();
             session.setAttribute("utente", registrato);
             session.setAttribute("successo", "Registrazione avvenuta con successo!");
 
             response.sendRedirect("home");
 
-        } catch (Exception e) {
-            throw new ServletException(e);
+        } catch (IllegalArgumentException e) {
+            // Violazione del contratto → errore mostrato all'utente
+            request.setAttribute("errore", e.getMessage());
+            request.getRequestDispatcher("home").forward(request, response);
+
+        } catch (RuntimeException e) {
+            // Errori del DAO o di sistema → errore generico
+            request.setAttribute("errore", "Si è verificato un errore interno.");
+            request.getRequestDispatcher("home").forward(request, response);
         }
     }
 }

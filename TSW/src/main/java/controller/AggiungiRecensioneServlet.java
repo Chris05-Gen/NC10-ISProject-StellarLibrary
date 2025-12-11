@@ -27,7 +27,6 @@ public class AggiungiRecensioneServlet extends HttpServlet {
             return;
         }
 
-        Integer idUtente = utente.getId();
         String isbn = request.getParameter("isbn");
         String titolo = request.getParameter("titolo");
         String testo = request.getParameter("testo");
