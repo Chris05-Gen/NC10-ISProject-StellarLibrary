@@ -28,28 +28,29 @@ public class OrdiniUtentiServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Utente admin = (Utente) session.getAttribute("utente");
 
-        // 1️⃣ Controllo autorizzazione
+        // 1️⃣ controllo autorizzazione admin
         if (admin == null || !"Admin".equals(admin.getTipo())) {
-            session.setAttribute("errore", "Account non autorizzato.");
+            session.setAttribute("errore", "Accesso non autorizzato.");
             response.sendRedirect("home");
             return;
         }
 
         try {
-            // 2️⃣ Recupero tramite service
-            List<Ordine> ordini = ordiniService.getOrdiniConUtente();
+            // 2️⃣ uso del service (nessun DAO nel controller!)
+            List<Map<String, Object>> ordini = ordiniService.getOrdiniCompletiPerAdmin();
 
+            // 3️⃣ invio alla JSP
             request.setAttribute("ordiniUtenti", ordini);
             request.getRequestDispatcher("/Interface/ordiniUtenti.jsp")
                     .forward(request, response);
 
-        } catch (IllegalStateException e) {
-            // Violazioni dei contratti lato DAO
-            session.setAttribute("errore", "Dati degli ordini non coerenti.");
+        } catch (IllegalArgumentException e) {
+            session.setAttribute("errore", e.getMessage());
             response.sendRedirect("home");
-
+        } catch (IllegalStateException e) {
+            session.setAttribute("errore", "Dati incoerenti negli ordini.");
+            response.sendRedirect("home");
         } catch (RuntimeException e) {
-            // Errori generici
             session.setAttribute("errore", "Errore nel caricamento degli ordini utenti.");
             response.sendRedirect("home");
         }

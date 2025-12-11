@@ -3,22 +3,23 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import model.*;
 import service.GestioneOrdiniService;
+import model.Utente;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.List;
 
 @WebServlet("/CreaOrdineServlet")
 public class CreaOrdineServlet extends HttpServlet {
+
     private final GestioneOrdiniService ordiniService = new GestioneOrdiniService();
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
         Utente u = (Utente) session.getAttribute("utente");
+
         if (u == null) {
             response.sendRedirect("home");
             return;
@@ -27,67 +28,28 @@ public class CreaOrdineServlet extends HttpServlet {
         String indirizzoRaw = request.getParameter("idIndirizzo");
         String metodoRaw = request.getParameter("metodoPagamento");
 
-        if (indirizzoRaw == null || metodoRaw == null) {
-            session.setAttribute("errore", "Seleziona indirizzo e metodo di pagamento.");
-            response.sendRedirect("CheckoutServlet");
-            return;
-        }
-
-        int idIndirizzo;
-        int idMetodo;
         try {
-            idIndirizzo = Integer.parseInt(indirizzoRaw);
-            idMetodo = Integer.parseInt(metodoRaw);
-        } catch (NumberFormatException e) {
-            session.setAttribute("errore", "Valori non validi per indirizzo o metodo di pagamento.");
-            response.sendRedirect("CheckoutServlet");
-            return;
-        }
-
-        try {
-            if (!ordiniService.indirizzoAppartieneAUtente(idIndirizzo, u.getId())) {
-                session.setAttribute("errore", "Indirizzo non valido.");
-                response.sendRedirect("CheckoutServlet");
-                return;
-            }
-
-            if (!ordiniService.metodoPagamentoEsiste(idMetodo)) {
-                session.setAttribute("errore", "Metodo di pagamento non valido.");
-                response.sendRedirect("CheckoutServlet");
-                return;
-            }
-
-            Carrello carrello = ordiniService.getCarrelloByUtente(u.getId());
-            List<Contiene> items = ordiniService.getContenutoCarrello(carrello.getId());
-
-            if (items.isEmpty()) {
-                session.setAttribute("errore", "Carrello vuoto.");
-                response.sendRedirect("VisualizzaCarrelloServlet");
-                return;
-            }
-
-            BigDecimal totale = ordiniService.calcolaTotaleOrdine(items);
-
-            // ✅ RECUPERO OGGETTI REALI (UML)
-            Indirizzo indirizzo = ordiniService.getIndirizzoById(idIndirizzo);
-            MetodoPagamento metodo = ordiniService.getMetodoPagamentoById(idMetodo);
-
-            // ✅ CREAZIONE ORDINE UML-COMPLIANT
-            int nuovoId = ordiniService.creaOrdine(
-                    u,
-                    indirizzo,
-                    metodo,
-                    totale
+            int idOrdine = ordiniService.creaOrdineCompleto(
+                    u.getId(),
+                    indirizzoRaw,
+                    metodoRaw
             );
 
-            ordiniService.svuotaCarrello(carrello.getId());
-
-            session.setAttribute("successo", "Acquisto effettuato! Ordine #" + nuovoId);
+            session.setAttribute("successo", "Acquisto effettuato! Ordine #" + idOrdine);
             response.sendRedirect("home");
 
+        } catch (IllegalArgumentException e) {
+            // errore di validazione input RAW
+            session.setAttribute("errore", e.getMessage());
+            response.sendRedirect("CheckoutServlet");
+
+        } catch (IllegalStateException e) {
+            // errore di business logic (indirizzo non tuo, carrello vuoto ...)
+            session.setAttribute("errore", e.getMessage());
+            response.sendRedirect("CheckoutServlet");
+
         } catch (Exception e) {
-            e.printStackTrace();
-            session.setAttribute("errore", "Errore durante la creazione dell'ordine.");
+            session.setAttribute("errore", "Errore inatteso durante la creazione dell'ordine.");
             response.sendRedirect("home");
         }
 

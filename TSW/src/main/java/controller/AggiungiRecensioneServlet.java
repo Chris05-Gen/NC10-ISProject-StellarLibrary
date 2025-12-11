@@ -3,89 +3,55 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.WebServlet;
-import model.Libro;
-import model.Recensione;
 import model.Utente;
 import service.GestioneRecensioniService;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.time.LocalDate;
 
 @WebServlet("/AggiungiRecensioneServlet")
 public class AggiungiRecensioneServlet extends HttpServlet {
+
     private final GestioneRecensioniService recensioniService = new GestioneRecensioniService();
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         HttpSession session = request.getSession(false);
-        Utente utente = (Utente) session.getAttribute("utente");
+        Utente utente = (session != null) ? (Utente) session.getAttribute("utente") : null;
 
         if (utente == null) {
             response.sendRedirect("home");
             return;
         }
 
+        // Parametri grezzi
         String isbn = request.getParameter("isbn");
         String titolo = request.getParameter("titolo");
         String testo = request.getParameter("testo");
         String valutazioneRaw = request.getParameter("valutazione");
 
-        String errore = null;
-        int valutazione = 0;
+        try {
+            // VALIDAZIONE delegata al service
+            recensioniService.validaRecensione(isbn, titolo, testo, valutazioneRaw);
 
-        // Validazione server-side
-        if (isbn == null || isbn.trim().isEmpty()) {
-            errore = "ISBN mancante.";
-        } else if (titolo == null || titolo.trim().isEmpty()) {
-            errore = "Titolo recensione obbligatorio.";
-        } else if (testo == null || testo.trim().isEmpty()) {
-            errore = "Il testo della recensione è obbligatorio.";
-        } else if (testo.length() > 500) {
-            errore = "La recensione è troppo lunga (max 500 caratteri).";
-        } else if (valutazioneRaw == null) {
-            errore = "Valutazione mancante.";
-        } else {
-            try {
-                valutazione = Integer.parseInt(valutazioneRaw);
-                if (valutazione < 1 || valutazione > 5) {
-                    errore = "Valutazione fuori range (1-5).";
-                }
-            } catch (NumberFormatException e) {
-                errore = "Valutazione non numerica.";
-            }
-        }
+            // Conversione valutazione dopo validazione
+            int valutazione = Integer.parseInt(valutazioneRaw);
 
-        if (errore != null) {
-            request.setAttribute("errore", errore);
+            // CREAZIONE recensione tramite service
+            recensioniService.aggiungiRecensione(utente, isbn, titolo, testo, valutazione);
+
+            // Redirect al dettaglio libro
+            response.sendRedirect("DettaglioLibroServlet?isbn=" + isbn);
+
+        } catch (IllegalArgumentException e) {
+            // Errori di input → mostro messaggio e torno alla pagina libro
+            request.setAttribute("errore", e.getMessage());
             request.setAttribute("isbn", isbn);
             request.getRequestDispatcher("/Interface/dettagliLibro.jsp").forward(request, response);
-            return;
-        }
 
-        Date data = Date.valueOf(LocalDate.now());
-        // ✅ creo un Libro "leggero" con solo ISBN
-        Libro libro = new Libro();
-        libro.setIsbn(isbn);
-
-// ✅ costruisco Recensione con gli oggetti, non con gli id
-        Recensione recensione = new Recensione(
-                0,
-                utente,     // ✅ oggetto Utente
-                libro,      // ✅ oggetto Libro
-                titolo,
-                testo,
-                valutazione,
-                data
-        );
-
-        try {
-            recensioniService.aggiungiRecensione(recensione);
         } catch (Exception e) {
             throw new ServletException("Errore durante l'aggiunta della recensione", e);
         }
-
-        response.sendRedirect("DettaglioLibroServlet?isbn=" + isbn);
     }
 }
