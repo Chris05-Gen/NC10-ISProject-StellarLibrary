@@ -7,6 +7,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.*;
+import service.GestioneOrdiniService;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -18,41 +19,41 @@ import java.util.Map;
 @WebServlet("/OrdiniUtentiServlet")
 public class OrdiniUtentiServlet extends HttpServlet {
 
+    private final GestioneOrdiniService ordiniService = new GestioneOrdiniService();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Utente admin = (Utente) request.getSession().getAttribute("utente");
 
-        // se l'utente non è un admin viene rimbalzato alla home
+        HttpSession session = request.getSession();
+        Utente admin = (Utente) session.getAttribute("utente");
+
+        // 1️⃣ controllo autorizzazione admin
         if (admin == null || !"Admin".equals(admin.getTipo())) {
-            session.setAttribute("errore", "Indirizzo non valido.");
+            session.setAttribute("errore", "Accesso non autorizzato.");
             response.sendRedirect("home");
             return;
         }
-        OrdineDAO ordineDAO = new OrdineDAO();
-        MetodoPagamentoDAO pagamentoDAO = new MetodoPagamentoDAO();
-        IndirizzoDAO indirizzoDAO = new IndirizzoDAO();
-        // recupero tutte le informazioni sull'ordine
+
         try {
-            List<Map<String, Object>> ordini = ordineDAO.getOrdiniConUtente();
-            // recupero le corrispondenze id corrispettivo valore nel DB
-            for (Map<String, Object> ordine : ordini) {
-                int idMetodo = (int) ordine.get("idMetodoPagamento");
-                int idIndirizzo = (int) ordine.get("idIndirizzo");
+            // 2️⃣ uso del service (nessun DAO nel controller!)
+            List<Map<String, Object>> ordini = ordiniService.getOrdiniCompletiPerAdmin();
 
-                MetodoPagamento mp = pagamentoDAO.getMetodoById(idMetodo);
-                Indirizzo indirizzo = indirizzoDAO.getIndirizzoById(idIndirizzo);
-
-                ordine.put("metodoPagamento", mp);
-                ordine.put("indirizzo", indirizzo);
-            }
-            // invio i dati alla jsp tramite la richiesta
+            // 3️⃣ invio alla JSP
             request.setAttribute("ordiniUtenti", ordini);
-            request.getRequestDispatcher("/Interface/ordiniUtenti.jsp").forward(request, response);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendRedirect("/Interface/errore.jsp");
+            request.getRequestDispatcher("/Interface/ordiniUtenti.jsp")
+                    .forward(request, response);
+
+        } catch (IllegalArgumentException e) {
+            session.setAttribute("errore", e.getMessage());
+            response.sendRedirect("home");
+        } catch (IllegalStateException e) {
+            session.setAttribute("errore", "Dati incoerenti negli ordini.");
+            response.sendRedirect("home");
+        } catch (RuntimeException e) {
+            session.setAttribute("errore", "Errore nel caricamento degli ordini utenti.");
+            response.sendRedirect("home");
         }
     }
 }
+
