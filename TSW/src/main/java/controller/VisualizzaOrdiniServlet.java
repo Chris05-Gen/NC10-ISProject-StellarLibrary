@@ -17,6 +17,7 @@ import java.util.Map;
 public class VisualizzaOrdiniServlet extends HttpServlet {
     private final GestioneOrdiniService ordiniService = new GestioneOrdiniService();
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -30,19 +31,19 @@ public class VisualizzaOrdiniServlet extends HttpServlet {
         }
 
         try {
+            // Ora gli ORDINI contengono già:
+            // - ordine.getMetodoPagamento()
+            // - ordine.getIndirizzo()
             List<Ordine> ordini = ordiniService.getOrdiniByUtente(u.getId());
-            Map<Integer, MetodoPagamento> mappaPagamenti = ordiniService.getMetodiPagamentoPerOrdini(ordini);
-            Map<Integer, Indirizzo> mappaIndirizzi = ordiniService.getIndirizziPerOrdini(ordini);
 
             request.setAttribute("ordini", ordini);
-            request.setAttribute("mappaPagamenti", mappaPagamenti);
-            request.setAttribute("mappaIndirizzi", mappaIndirizzi);
 
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/Interface/ordini.jsp");
-            dispatcher.forward(request, response);
+            request.getRequestDispatcher("/Interface/ordini.jsp")
+                    .forward(request, response);
 
         } catch (Exception e) {
             response.sendError(500, "Errore durante il recupero degli ordini");
         }
     }
 }
+

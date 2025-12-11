@@ -37,7 +37,7 @@ public class OrdiniUtentiServlet extends HttpServlet {
 
         try {
             // 2️⃣ uso del service (nessun DAO nel controller!)
-            List<Map<String, Object>> ordini = ordiniService.getOrdiniCompletiPerAdmin();
+            List<Ordine> ordini = ordiniService.getOrdiniCompletiPerAdmin();
 
             // 3️⃣ invio alla JSP
             request.setAttribute("ordiniUtenti", ordini);

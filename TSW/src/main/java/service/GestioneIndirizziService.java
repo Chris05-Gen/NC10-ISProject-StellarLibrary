@@ -2,6 +2,7 @@ package service;
 
 import dao.IndirizzoDAO;
 import model.Indirizzo;
+import model.Utente;
 
 public class GestioneIndirizziService {
 
@@ -49,8 +50,11 @@ public class GestioneIndirizziService {
             throw new IllegalArgumentException("Numero di telefono non valido.");
 
         try {
+            Utente u = new Utente();
+            u.setId(idUtente);
+
             Indirizzo nuovo = new Indirizzo();
-            nuovo.setIdUtente(idUtente);
+            nuovo.setUtente(u);        // ✅ associazione UML CORRETTA
             nuovo.setVia(via);
             nuovo.setCitta(citta);
             nuovo.setCap(cap);
@@ -64,4 +68,5 @@ public class GestioneIndirizziService {
             throw new RuntimeException("Errore nella creazione dell'indirizzo.", e);
         }
     }
+
 }

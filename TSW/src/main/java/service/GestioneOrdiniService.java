@@ -22,17 +22,22 @@ public class GestioneOrdiniService {
     // =========================================================================
 
     public List<Ordine> getOrdiniByUtente(int idUtente) {
-        if (idUtente <= 0)
-            throw new IllegalArgumentException("ID utente non valido.");
-
         try {
             List<Ordine> ordini = ordineDAO.getOrdiniByUtente(idUtente);
-            return (ordini != null) ? ordini : Collections.emptyList();
+
+            for (Ordine o : ordini) {
+                // arricchimento UML
+                o.setIndirizzo(indirizzoDAO.getIndirizzoById(o.getIndirizzo().getId()));
+                o.setMetodoPagamento(pagamentoDAO.getMetodoById(o.getMetodoPagamento().getId()));
+            }
+
+            return ordini;
 
         } catch (Exception e) {
-            throw new RuntimeException("Errore nel recupero degli ordini dell'utente.", e);
+            throw new RuntimeException("Errore nel recupero ordini utente", e);
         }
     }
+
 
     public List<Ordine> getOrdiniCompletiPerAdmin() {
         try {
@@ -265,4 +270,20 @@ public class GestioneOrdiniService {
 
         return idOrdine;
     }
+    public Indirizzo getIndirizzoById(int id) {
+        try {
+            return indirizzoDAO.getIndirizzoById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Errore nel recupero indirizzo", e);
+        }
+    }
+
+    public MetodoPagamento getMetodoPagamentoById(int id) {
+        try {
+            return pagamentoDAO.getMetodoById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Errore nel recupero metodo pagamento", e);
+        }
+    }
+
 }
