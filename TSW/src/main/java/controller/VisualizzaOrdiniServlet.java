@@ -3,18 +3,16 @@ package controller;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import model.Indirizzo;
-import model.MetodoPagamento;
 import model.Ordine;
 import model.Utente;
 import service.GestioneOrdiniService;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @WebServlet("/VisualizzaOrdiniServlet")
 public class VisualizzaOrdiniServlet extends HttpServlet {
+
     private final GestioneOrdiniService ordiniService = new GestioneOrdiniService();
 
     @Override
@@ -24,26 +22,29 @@ public class VisualizzaOrdiniServlet extends HttpServlet {
         HttpSession session = request.getSession();
         Utente u = (Utente) session.getAttribute("utente");
 
+        // 1️⃣ Validazione sessione (solo controllo sessione → NON nel service)
         if (u == null) {
-            session.setAttribute("errore", "Utente inesistente");
+            session.setAttribute("errore", "Devi effettuare il login per visualizzare i tuoi ordini.");
             response.sendRedirect("home");
             return;
         }
 
         try {
-            // Ora gli ORDINI contengono già:
-            // - ordine.getMetodoPagamento()
-            // - ordine.getIndirizzo()
+            // 2️⃣ Recupero ordini tramite service (service fa tutto)
             List<Ordine> ordini = ordiniService.getOrdiniByUtente(u.getId());
 
+            // 3️⃣ Passaggio alla JSP
             request.setAttribute("ordini", ordini);
-
             request.getRequestDispatcher("/Interface/ordini.jsp")
                     .forward(request, response);
 
-        } catch (Exception e) {
-            response.sendError(500, "Errore durante il recupero degli ordini");
+        } catch (IllegalArgumentException e) {
+            session.setAttribute("errore", e.getMessage());
+            response.sendRedirect("home");
+
+        } catch (RuntimeException e) {
+            session.setAttribute("errore", "Errore durante il recupero dei tuoi ordini.");
+            response.sendRedirect("home");
         }
     }
 }
-

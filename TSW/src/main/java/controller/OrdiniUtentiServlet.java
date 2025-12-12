@@ -1,20 +1,14 @@
 package controller;
 
-import dao.IndirizzoDAO;
-import dao.MetodoPagamentoDAO;
-import dao.OrdineDAO;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-import model.*;
+import model.Utente;
+import model.Ordine;
 import service.GestioneOrdiniService;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
-
-
 
 @WebServlet("/OrdiniUtentiServlet")
 public class OrdiniUtentiServlet extends HttpServlet {
@@ -25,36 +19,42 @@ public class OrdiniUtentiServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        Utente admin = (Utente) session.getAttribute("utente");
+        HttpSession session = request.getSession(false);
+        Utente admin = (session != null) ? (Utente) session.getAttribute("utente") : null;
 
-        // 1️⃣ controllo autorizzazione admin
+        // 1️⃣ Precondizione: deve essere admin
         if (admin == null || !"Admin".equals(admin.getTipo())) {
-            session.setAttribute("errore", "Accesso non autorizzato.");
+            if (session != null)
+                session.setAttribute("errore", "Accesso non autorizzato.");
             response.sendRedirect("home");
             return;
         }
 
         try {
-            // 2️⃣ uso del service (nessun DAO nel controller!)
+            // 2️⃣ Business logic completamente nel service
             List<Ordine> ordini = ordiniService.getOrdiniCompletiPerAdmin();
 
-            // 3️⃣ invio alla JSP
+            // 3️⃣ Invio alla JSP
             request.setAttribute("ordiniUtenti", ordini);
             request.getRequestDispatcher("/Interface/ordiniUtenti.jsp")
                     .forward(request, response);
 
         } catch (IllegalArgumentException e) {
+            // Errori previsti → messaggio all'utente
             session.setAttribute("errore", e.getMessage());
             response.sendRedirect("home");
+
         } catch (IllegalStateException e) {
+            // Errori di coerenza dei dati
             session.setAttribute("errore", "Dati incoerenti negli ordini.");
             response.sendRedirect("home");
+
         } catch (RuntimeException e) {
-            session.setAttribute("errore", "Errore nel caricamento degli ordini utenti.");
-            response.sendRedirect("home");
+            // Errori DAO / di sistema
+            response.sendError(
+                    HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                    "Errore nel caricamento degli ordini utenti."
+            );
         }
     }
-
 }
-

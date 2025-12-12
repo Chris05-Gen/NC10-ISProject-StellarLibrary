@@ -45,12 +45,12 @@ public class AggiungiRecensioneServlet extends HttpServlet {
             response.sendRedirect("DettaglioLibroServlet?isbn=" + isbn);
 
         } catch (IllegalArgumentException e) {
-            // Errori di input → mostro messaggio e torno alla pagina libro
             request.setAttribute("errore", e.getMessage());
-            request.setAttribute("isbn", isbn);
-            request.getRequestDispatcher("/Interface/dettagliLibro.jsp").forward(request, response);
 
-        } catch (Exception e) {
+            // Mantieni ISBN per ricaricare il dettaglio
+            response.sendRedirect("DettaglioLibroServlet?isbn=" + isbn);
+        }
+        catch (Exception e) {
             throw new ServletException("Errore durante l'aggiunta della recensione", e);
         }
     }
