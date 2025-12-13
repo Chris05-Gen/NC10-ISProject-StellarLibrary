@@ -127,14 +127,41 @@ public class GestioneCatalogoService {
             throw new RuntimeException("Errore nella ricerca dei libri con filtri", e);
         }
     }
+    public void validaISBN(String isbn) {
+        if (isbn == null || isbn.trim().isEmpty())
+            throw new IllegalArgumentException("ISBN mancante.");
+
+        // Se vuoi regola più rigida:
+        if (!isbn.matches("\\d{10,13}"))
+            throw new IllegalArgumentException("Formato ISBN non valido.");
+    }
+
 
     public Libro getLibroByISBN(String isbn) {
+
+        validaISBN(isbn); // 👉 precondizione
+
         try {
             return libroDAO.findByISBN(isbn);
         } catch (Exception e) {
             throw new RuntimeException("Errore nel recupero del libro", e);
         }
     }
+
+    public List<Libro> getUltimiLibri(int quanti) {
+
+        // Design by Contract: precondizione
+        if (quanti <= 0) {
+            throw new IllegalArgumentException("Il numero di libri da recuperare deve essere positivo.");
+        }
+
+        try {
+            return libroDAO.findUltimi(quanti);
+        } catch (Exception e) {
+            throw new RuntimeException("Errore nel recupero degli ultimi libri.", e);
+        }
+    }
+
 
     // -------------------------------------------------------
     //  CREAZIONE LIBRO (ADMIN)

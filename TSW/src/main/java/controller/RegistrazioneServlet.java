@@ -4,6 +4,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import model.Utente;
+import service.CarrelloService;
 import service.RegistrazioneService;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.io.IOException;
 public class RegistrazioneServlet extends HttpServlet {
 
     private final RegistrazioneService registrazioneService = new RegistrazioneService();
+    private final CarrelloService carrelloService = new CarrelloService(); // 👈 AGGIUNTO
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -23,17 +25,14 @@ public class RegistrazioneServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         try {
-            // 1. Validazione secondo il contratto del Service
             registrazioneService.validaDatiRegistrazione(nome, cognome, email, password);
 
-            // 2. Verifica che l'email non sia già registrata
             if (registrazioneService.emailEsistente(email)) {
                 request.setAttribute("errore", "Email già registrata.");
                 request.getRequestDispatcher("home").forward(request, response);
                 return;
             }
 
-            // 3. Creazione dell'oggetto Utente
             Utente nuovoUtente = new Utente();
             nuovoUtente.setNome(nome);
             nuovoUtente.setCognome(cognome);
@@ -41,27 +40,32 @@ public class RegistrazioneServlet extends HttpServlet {
             nuovoUtente.setPassword(password);
             nuovoUtente.setTipo("Cliente");
 
-            // 4. Registrazione
             registrazioneService.registraUtente(nuovoUtente);
 
-            // 5. Login automatico dopo la registrazione
+            // Login automatico
             Utente registrato = registrazioneService.login(email, password);
 
             HttpSession session = request.getSession();
             session.setAttribute("utente", registrato);
             session.setAttribute("successo", "Registrazione avvenuta con successo!");
 
+            // 🔥 MERGE CARRELLO GUEST → UTENTE SUBITO DOPO REGISTRAZIONE
+            Integer guestCarrelloId = (Integer) session.getAttribute("carrelloId");
+            if (guestCarrelloId != null) {
+                carrelloService.unisciCarrelloGuestConUtente(guestCarrelloId, registrato);
+                session.removeAttribute("carrelloId");
+            }
+
             response.sendRedirect("home");
 
         } catch (IllegalArgumentException e) {
-            // Violazione del contratto → errore mostrato all'utente
             request.setAttribute("errore", e.getMessage());
             request.getRequestDispatcher("home").forward(request, response);
 
         } catch (RuntimeException e) {
-            // Errori del DAO o di sistema → errore generico
-            request.setAttribute("errore", "Si è verificato un errore interno.");
+            request.setAttribute("errore", "Errore interno durante la registrazione.");
             request.getRequestDispatcher("home").forward(request, response);
         }
     }
 }
+

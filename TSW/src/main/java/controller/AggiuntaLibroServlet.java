@@ -21,7 +21,8 @@ public class AggiuntaLibroServlet extends HttpServlet {
         Utente admin = (Utente) req.getSession().getAttribute("utente");
 
         if (admin == null || !"Admin".equals(admin.getTipo())) {
-            resp.sendRedirect("/Interface/unauthorized.jsp");
+            req.getSession().setAttribute("errore", "Accesso non autorizzato.");
+            resp.sendRedirect("home");
             return;
         }
 

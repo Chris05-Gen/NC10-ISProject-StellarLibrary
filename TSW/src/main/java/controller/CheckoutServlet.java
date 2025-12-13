@@ -48,9 +48,14 @@ public class CheckoutServlet extends HttpServlet {
 
             request.getRequestDispatcher("/Interface/checkout.jsp").forward(request, response);
 
-        } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                    "Errore durante il caricamento del checkout");
+        } catch (IllegalArgumentException e) {
+            session.setAttribute("errore", e.getMessage());
+            response.sendRedirect("home");
+
+        } catch (RuntimeException e) {
+            session.setAttribute("errore", "Errore durante il caricamento del checkout.");
+            response.sendRedirect("home");
         }
+
     }
 }

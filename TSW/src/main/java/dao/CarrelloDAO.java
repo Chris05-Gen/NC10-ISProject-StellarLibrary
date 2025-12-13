@@ -77,4 +77,8 @@ public class CarrelloDAO {
             stmt.executeUpdate();
         }
     }
+    public Carrello findRawByUtente(Utente utente) throws SQLException {
+        return findByUtente(utente); // ma NON crea carrelli
+    }
+
 }
