@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://jakarta.ee/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -14,7 +14,7 @@
 
 </head>
 <body>
-<jsp:include page="navbar.jsp" /> <!-- navbar separata -->
+<jsp:include page="Interface/navbar.jsp" /> <!-- navbar separata -->
 <c:if test="${not empty errore}">
   <div class="toast error-toast">${errore}</div>
 </c:if>

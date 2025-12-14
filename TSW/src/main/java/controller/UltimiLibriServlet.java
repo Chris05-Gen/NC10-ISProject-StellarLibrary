@@ -25,13 +25,13 @@ public class UltimiLibriServlet extends HttpServlet {
             // 2️⃣ passo i dati alla JSP
             request.setAttribute("ultimiLibri", ultimiLibri);
 
-            RequestDispatcher rd = request.getRequestDispatcher("Interface/index.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
             rd.forward(request, response);
 
         } catch (IllegalArgumentException e) {
             // errore “previsto” dal contratto → messaggio utente
             request.setAttribute("errore", e.getMessage());
-            request.getRequestDispatcher("Interface/index.jsp").forward(request, response);
+            request.getRequestDispatcher("/index.jsp").forward(request, response);
 
         } catch (RuntimeException e) {
             // errore tecnico / DB
