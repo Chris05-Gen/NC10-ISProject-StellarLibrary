@@ -2,7 +2,7 @@ Stellar Library - Progetto TSW
 
 Per ottenere il progetto completo, aprire il terminale o CMD e digitare:
 
-git clone https://github.com/tuo-username/StellarLibrary.git per clonare il repository.
+git clone https://github.com/tuo-username/ISProject.git per clonare il repository.
 
 cd StellarLibrary per entrare nella cartella del progetto.
 
