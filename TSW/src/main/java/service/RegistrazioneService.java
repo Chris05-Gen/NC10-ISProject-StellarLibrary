@@ -5,8 +5,16 @@ import model.Utente;
 
 public class RegistrazioneService {
 
-    private final UtenteDAO utenteDAO = new UtenteDAO();
+    private final UtenteDAO utenteDAO;
 
+    public RegistrazioneService(UtenteDAO utenteDAO) {
+        this.utenteDAO = utenteDAO;
+    }
+
+    // costruttore di default (opzionale)
+    public RegistrazioneService() {
+        this.utenteDAO = new UtenteDAO();
+    }
     /**
      * Applica il contratto di validazione dei dati di registrazione.
      *
