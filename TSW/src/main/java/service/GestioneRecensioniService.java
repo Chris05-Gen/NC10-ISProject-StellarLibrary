@@ -11,8 +11,16 @@ import java.util.List;
 
 public class GestioneRecensioniService {
 
-    private final RecensioneDAO recensioneDAO = new RecensioneDAO();
+    private final RecensioneDAO recensioneDAO;
 
+    public GestioneRecensioniService(RecensioneDAO recensioneDAO) {
+        this.recensioneDAO = recensioneDAO;
+    }
+
+    // costruttore di default (se ti serve)
+    public GestioneRecensioniService() {
+        this.recensioneDAO = new RecensioneDAO();
+    }
     /**
      * Valida tutti i campi della recensione.
      *

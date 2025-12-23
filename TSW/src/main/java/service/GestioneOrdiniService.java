@@ -10,13 +10,37 @@ import java.util.List;
 
 public class GestioneOrdiniService {
 
-    private final OrdineDAO ordineDAO = new OrdineDAO();
-    private final MetodoPagamentoDAO pagamentoDAO = new MetodoPagamentoDAO();
-    private final IndirizzoDAO indirizzoDAO = new IndirizzoDAO();
-    private final CarrelloDAO carrelloDAO = new CarrelloDAO();
-    private final ContieneDAO contieneDAO = new ContieneDAO();
-    private final LibroDAO libroDAO = new LibroDAO();
+    private final OrdineDAO ordineDAO;
+    private final MetodoPagamentoDAO pagamentoDAO;
+    private final IndirizzoDAO indirizzoDAO;
+    private final CarrelloDAO carrelloDAO;
+    private final ContieneDAO contieneDAO;
+    private final LibroDAO libroDAO;
 
+    // Costruttore di produzione (default)
+    public GestioneOrdiniService() {
+        this(new OrdineDAO(),
+                new MetodoPagamentoDAO(),
+                new IndirizzoDAO(),
+                new CarrelloDAO(),
+                new ContieneDAO(),
+                new LibroDAO());
+    }
+
+    // Costruttore per test / DI
+    public GestioneOrdiniService(OrdineDAO ordineDAO,
+                                 MetodoPagamentoDAO pagamentoDAO,
+                                 IndirizzoDAO indirizzoDAO,
+                                 CarrelloDAO carrelloDAO,
+                                 ContieneDAO contieneDAO,
+                                 LibroDAO libroDAO) {
+        this.ordineDAO = ordineDAO;
+        this.pagamentoDAO = pagamentoDAO;
+        this.indirizzoDAO = indirizzoDAO;
+        this.carrelloDAO = carrelloDAO;
+        this.contieneDAO = contieneDAO;
+        this.libroDAO = libroDAO;
+    }
     // =========================================================================
     //  RECUPERO DATI
     // =========================================================================

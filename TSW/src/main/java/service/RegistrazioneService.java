@@ -41,6 +41,21 @@ public class RegistrazioneService {
             throw new IllegalArgumentException("Email non valida.");
         }
 
+        String regexNome = "^[A-Za-zÀ-ù'' -]{2,30}$";
+        if (!nome.matches(regexNome)) {
+            throw new IllegalArgumentException("Nome non valido.");
+        }
+
+        String regexCognome = "^[A-Za-zÀ-ù'' -]{2,30}$";
+        if (!cognome.matches(regexCognome)) {
+            throw new IllegalArgumentException("Cognome non valido.");
+        }
+
+        String regexEmail = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,10}$";
+        if (!email.matches(regexEmail)) {
+            throw new IllegalArgumentException("Email non valida.");
+        }
+
         if (password == null || password.length() < 6) {
             throw new IllegalArgumentException("La password deve essere di almeno 6 caratteri.");
         }

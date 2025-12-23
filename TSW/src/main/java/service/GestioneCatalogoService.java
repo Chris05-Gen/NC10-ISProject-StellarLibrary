@@ -10,8 +10,19 @@ import java.util.List;
 
 public class GestioneCatalogoService {
 
-    private final LibroDAO libroDAO = new LibroDAO();
-    private final GenereDAO genereDAO = new GenereDAO();
+    private final LibroDAO libroDAO;
+    private final GenereDAO genereDAO;
+
+    // Costruttore di produzione (default)
+    public GestioneCatalogoService() {
+        this(new LibroDAO(), new GenereDAO());
+    }
+
+    // Costruttore per test / DI
+    public GestioneCatalogoService(LibroDAO libroDAO, GenereDAO genereDAO) {
+        this.libroDAO = libroDAO;
+        this.genereDAO = genereDAO;
+    }
 
     // -------------------------------------------------------
     //  FILTRI CATALOGO
