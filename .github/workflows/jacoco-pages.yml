@@ -34,7 +34,7 @@ jobs:
       - name: Upload JaCoCo HTML as Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: target/site/jacoco
+          path: ISProject/TSW/target/site/jacoco
 
   deploy:
     needs: build
