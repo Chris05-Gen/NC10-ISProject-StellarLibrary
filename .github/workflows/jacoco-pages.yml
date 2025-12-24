@@ -2,7 +2,7 @@ name: Publish JaCoCo report to GitHub Pages
 
 on:
   push:
-    branches: [ "main" ]   # oppure "master" se è quello il tuo branch
+    branches: [ "main" ]
   workflow_dispatch:
 
 permissions:
@@ -17,6 +17,10 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ISProject/TSW
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,7 +33,9 @@ jobs:
 
       - name: Build + Test + JaCoCo report
         run: mvn -B clean test jacoco:report
-        working-directory: TSW
+
+      - name: Debug - show jacoco folder
+        run: ls -R target/site || true
 
       - name: Upload JaCoCo HTML as Pages artifact
         uses: actions/upload-pages-artifact@v3
