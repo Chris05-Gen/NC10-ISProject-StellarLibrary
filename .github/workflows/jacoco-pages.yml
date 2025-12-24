@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ISProject/TSW
+        working-directory: TSW
 
     steps:
       - name: Checkout
@@ -40,7 +40,7 @@ jobs:
       - name: Upload JaCoCo HTML as Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ISProject/TSW/target/site/jacoco
+          path: TSW/target/site/jacoco
 
   deploy:
     needs: build
