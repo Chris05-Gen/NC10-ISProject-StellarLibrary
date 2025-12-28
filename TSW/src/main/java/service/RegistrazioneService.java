@@ -37,8 +37,8 @@ public class RegistrazioneService {
             throw new IllegalArgumentException("Il cognome è obbligatorio.");
         }
 
-        if (email == null || !email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            throw new IllegalArgumentException("Email non valida.");
+        if (email == null || email.trim().isEmpty()) {
+            throw new IllegalArgumentException("Email obbligatoria.");
         }
 
         String regexNome = "^[A-Za-zÀ-ù'' -]{2,30}$";
@@ -66,10 +66,6 @@ public class RegistrazioneService {
      * Lancia IllegalArgumentException se l'email non rispetta il formato.
      */
     public boolean emailEsistente(String email) {
-
-        if (email == null || !email.matches("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
-            throw new IllegalArgumentException("Email non valida.");
-        }
 
         try {
             return utenteDAO.emailEsistente(email);
