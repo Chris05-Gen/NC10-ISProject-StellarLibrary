@@ -139,7 +139,7 @@ class RegistrazioneServiceTest {
                 () -> registrazioneService.validaDatiRegistrazione(
                         "Mario",
                         "Rossi",
-                        "   ",
+                        "",
                         "Password123"
                 )
         );
