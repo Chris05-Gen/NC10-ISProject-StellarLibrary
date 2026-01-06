@@ -105,10 +105,7 @@ public class GestioneOrdiniService {
             throw new IllegalArgumentException("ID non validi.");
 
         try {
-            Boolean valore = indirizzoDAO.AppartieneA(idIndirizzo, idUtente);
-            if (valore == null)
-                throw new IllegalStateException("Il DAO ha restituito null.");
-            return valore;
+            return indirizzoDAO.AppartieneA(idIndirizzo, idUtente);
 
         } catch (Exception e) {
             throw new RuntimeException("Errore nel controllo di appartenenza dell'indirizzo.", e);
@@ -120,10 +117,7 @@ public class GestioneOrdiniService {
             throw new IllegalArgumentException("ID metodo non valido.");
 
         try {
-            Boolean valore = pagamentoDAO.Esiste(idMetodo);
-            if (valore == null)
-                throw new IllegalStateException("Il DAO ha restituito null.");
-            return valore;
+            return pagamentoDAO.Esiste(idMetodo);
 
         } catch (Exception e) {
             throw new RuntimeException("Errore nel controllo metodo di pagamento.", e);

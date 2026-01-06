@@ -1,7 +1,6 @@
 package service;
 
 import dao.RecensioneDAO;
-import model.Libro;
 import model.Recensione;
 import model.Utente;
 import org.junit.jupiter.api.BeforeEach;

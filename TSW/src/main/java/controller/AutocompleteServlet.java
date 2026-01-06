@@ -14,6 +14,8 @@ import java.util.List;
 
 @WebServlet("/AutocompleteServlet")
 public class AutocompleteServlet extends HttpServlet {
+
+    @SuppressWarnings("unchecked")
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
