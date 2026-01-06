@@ -1,0 +1,54 @@
+name: Publish JaCoCo report to GitHub Pages
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: TSW
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Build + Test + JaCoCo report
+        run: mvn -B clean test jacoco:report
+
+      - name: Debug - show jacoco folder
+        run: ls -R target/site || true
+
+      - name: Upload JaCoCo HTML as Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: TSW/target/site/jacoco
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
