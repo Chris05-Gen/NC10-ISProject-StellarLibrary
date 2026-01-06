@@ -2,7 +2,6 @@ package service;
 
 import dao.CarrelloDAO;
 import dao.ContieneDAO;
-import dao.LibroDAO;
 import jakarta.servlet.http.HttpSession;
 import model.Carrello;
 import model.Contiene;
@@ -15,7 +14,6 @@ import java.util.*;
 public class CarrelloService {
     private final CarrelloDAO carrelloDAO = new CarrelloDAO();
     private final ContieneDAO contieneDAO = new ContieneDAO();
-    private final LibroDAO libroDAO = new LibroDAO();
 
     // Recupera o crea il carrello (utente o guest)
     public Carrello getOrCreateCarrello(Utente utente, HttpSession session) {

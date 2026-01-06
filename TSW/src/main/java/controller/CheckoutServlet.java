@@ -19,7 +19,6 @@ public class CheckoutServlet extends HttpServlet {
     private final CarrelloService carrelloService = new CarrelloService();
     private final GestioneOrdiniService ordiniService = new GestioneOrdiniService();
 
-    @SuppressWarnings("unchecked")
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
