@@ -6,10 +6,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>controller</groupId>
-    <artifactId>ProgettoTSW</artifactId>
+    <artifactId>StellarLibrary</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>ProgettoTSW</name>
+    <name>StellarLibrary</name>
 
     <!-- ================= PROPERTIES ================= -->
     <properties>

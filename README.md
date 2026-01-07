@@ -1,4 +1,4 @@
-Stellar Library - Progetto TSW
+Stellar Library
 
 Per ottenere il progetto completo, aprire il terminale o CMD e digitare:
 
