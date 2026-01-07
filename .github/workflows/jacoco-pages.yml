@@ -40,7 +40,7 @@ jobs:
       - name: Upload JaCoCo HTML as Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: TSW/target/site/jacoco
+          path: StellarLibrary/target/site/jacoco
 
   deploy:
     needs: build
