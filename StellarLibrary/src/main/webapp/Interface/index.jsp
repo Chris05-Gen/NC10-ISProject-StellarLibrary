@@ -23,7 +23,7 @@
   <center>
     <div class="row">
     <div class="content">
-      <h3>Benvenuti nella Stellar Library</h3>
+      <h3>Benvenuti nella <br> Stellar Library</h3>
       <p>Scopri un universo di conoscenza con la nostra collezione di libri. Unisciti a noi e viaggia attraverso le pagine.</p>
     </div>
   </div>
