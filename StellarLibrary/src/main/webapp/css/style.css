@@ -1,14 +1,13 @@
 /* ====================================================
-   STELLAR LIBRARY - STILE PRINCIPALE
-
+   STELLAR LIBRARY - STILE PRINCIPALE (SIMMETRIA TOTALE)
    ==================================================== */
 
 /*------------------------------------------------*/
-/*------------ VARIABILI GLIOBALI ----------------*/
+/*------------ VARIABILI GLOBALI -----------------*/
 /*------------------------------------------------*/
 :root {
-    --blue: #191970;         /* Colore primario */
-    --dark-color: #2b2b2b;    /* Colore scuro usato nei box */
+    --blue: #191970;          /* Colore primario */
+    --dark-color: #2b2b2b;    /* Colore scuro box */
     --black: #444;            /* Testi principali */
     --light-color: #666;      /* Testi secondari */
     --border: 0.1rem solid rgba(0,0,0,0.1);
@@ -17,7 +16,7 @@
 }
 
 /*------------------------------------------------*/
-/*------------ IMPOSTAZIONI GENERALI ---------------*/
+/*------------ IMPOSTAZIONI GENERALI -------------*/
 /*------------------------------------------------*/
 * {
     font-family: 'Poppins', sans-serif;
@@ -48,9 +47,7 @@ section {
 .heading::before {
     content: '';
     position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
+    top: 50%; left: 0; right: 0;
     height: 0.1rem;
     background: rgba(0, 0, 0, 0.1);
     z-index: -1;
@@ -63,6 +60,10 @@ section {
     background: #fff;
     border: var(--border);
 }
+
+/*------------------------------------------------*/
+/*----------- FORM LOGIN / REG POPUP -------------*/
+/*------------------------------------------------*/
 .user-form-container {
     position: fixed;
     top: 0; left: 0;
@@ -134,13 +135,13 @@ section {
     color: #cc0000;
     cursor: pointer;
 }
+
 /*------------------------------------------------*/
 /*-------------- TOAST MESSAGGI ------------------*/
 /*------------------------------------------------*/
 .toast {
     position: fixed;
-    top: 10%;
-    left: 50%;
+    top: 10%; left: 50%;
     transform: translate(-50%, -50%);
     z-index: 9999;
     padding: 25px 40px;
@@ -153,23 +154,13 @@ section {
     gap: 15px;
     animation: slideDown 0.6s ease;
 }
-.success-toast {
-    background-color: #4caf50;
-}
 
-.error-toast {
-    background-color: #f44336;
-}
+.success-toast { background-color: #4caf50; }
+.error-toast { background-color: #f44336; }
 
 @keyframes slideDown {
-    from {
-        opacity: 0;
-        top: 0%;
-    }
-    to {
-        opacity: 1;
-        top: 10%;
-    }
+    from { opacity: 0; top: 0%; }
+    to { opacity: 1; top: 10%; }
 }
 
 .toast .close-toast {
@@ -222,32 +213,32 @@ section {
 .logout-btn:hover {
     background-color: #b71c1c;
 }
+
 /*------------------------------------------------*/
 /*------------- AUTOCOMPLETE BAR -----------------*/
 /*------------------------------------------------*/
 .autocomplete-items {
     position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
+    top: 110%;
+    left: 0; right: 0;
     background: white;
-    border: 1px solid #ccc;
     z-index: 1000;
     max-height: 250px;
     overflow-y: auto;
-    border-radius: 4px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
+
 .autocomplete-items div {
     padding: 10px;
     font-size: 1.4rem;
     cursor: pointer;
+    border-bottom: 1px solid #eee;
 }
 
 .autocomplete-items div:hover {
     background-color: #f0f0f0;
 }
-
 
 /*------------------------------------------------*/
 /*------------------- BOTTONI --------------------*/
@@ -268,118 +259,284 @@ section {
 }
 
 /*------------------------------------------------*/
-/*--------------- SEZIONE HEADER -----------------*/
+/*--- HEADER TOP (SIMMETRIA PERFETTA) ---*/
 /*------------------------------------------------*/
 .header .header-1 {
     background: #fff;
     padding: 1.5rem 9%;
-    display: flex;
+
+    /* GRIGLIA A 3 COLONNE RIGIDE */
+    display: grid;
+    /* 1fr = Spazio Sinistro
+       minmax = Spazio Centrale (Barra)
+       1fr = Spazio Destro */
+    grid-template-columns: 1fr minmax(300px, 600px) 1fr;
+
     align-items: center;
-    justify-content: space-between;
+    gap: 2rem;
 }
 
+/* 1. LOGO (Allineato a sinistra estrema) */
 .header .header-1 .logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    justify-self: start;
+}
+
+.header .header-1 .logo img {
+    height: 85px;
+    width: auto;
+    object-fit: contain;
+}
+
+.header .header-1 .logo span {
     font-size: 2.5rem;
     font-weight: bolder;
-    color: var(--black);
-}
-
-.header .header-1 .logo i {
     color: var(--blue);
+    white-space: nowrap;
 }
 
+/* 2. SEARCH BAR (Centrata perfettamente) */
 .header .header-1 .search-form {
-    position: relative; /* Aggiunto! Necessario per ancorare l'autocomplete */
-    max-width: 60%;
-    min-width: 50%;
+    position: relative;
+    width: 100%;
     height: 5rem;
-    border: var(--border);
-    overflow: visible; /* serve per mostrare suggerimenti */
-    background: #fff;
+    background: #f4f6f8;
+    border-radius: 50px;
     display: flex;
     align-items: center;
-    border-radius: 0.5rem;
+    padding: 0 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+
+    border: 2px solid transparent;
+    transition: background-color 0.2s ease-out,
+    box-shadow 0.2s ease-out,
+    border-color 0.2s ease-out;
+
+    justify-self: center; /* Assicura il centro */
+}
+
+.header .header-1 .search-form:focus-within {
+    background: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    border-color: var(--blue);
 }
 
 .header .header-1 .search-form input {
-    font-size: 1.6rem;
-    padding: 0 1.2rem;
-    height: 100%;
     width: 100%;
-    text-transform: none;
+    background: transparent;
+    font-size: 1.6rem;
     color: var(--black);
+    height: 100%;
 }
 
 .header .header-1 .search-form label {
-    font-size: 2.5rem;
-    padding-right: 1.5rem;
-    color: var(--black);
+    font-size: 2rem;
+    color: var(--light-color);
     cursor: pointer;
+    margin-left: 1rem;
+    transition: color 0.2s;
 }
 
+.header .header-1 .search-form:focus-within label,
 .header .header-1 .search-form label:hover {
-    color: gold;  /* Cambiato da var(--green) a gold */
+    color: var(--blue);
 }
 
-.header .header-1 .icons div,
-.header .header-1 .icons a {
-    font-size: 2.5rem;
-    margin-left: 1.5rem;
-    color: var(--black);
+/* 3. ICONE (Allineate a destra estrema) */
+.user-icon {
+    display: inline-block;
+    font-size: 1.5rem;
     cursor: pointer;
+    justify-self: end; /* Spinge tutto a destra */
 }
 
-.header .header-1 .icons div:hover,
-.header .header-1 .icons a:hover {
-    color: gold;  /* Cambiato da var(--green) a gold */
-}
+#search-btn { display: none; }
 
 
-
-#search-btn {
-    display: none;
-}
-
+/*------------------------------------------------*/
+/*--- HEADER BOTTOM (MENU CENTRATO) ---*/
+/*------------------------------------------------*/
 .header .header-2 {
     background: var(--blue);
+    display: flex;
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center;     /* Centra verticalmente */
+    width: 100%;
 }
 
 .header .header-2 .navbar {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
 }
 
 .header .header-2 .navbar a {
     color: #fff;
     display: inline-block;
-    padding: 1.2rem;
+    padding: 1.2rem 2rem;
     font-size: 2.5rem;
+    text-align: center;
 }
 
 .header .header-2 .navbar a:hover {
     color: gold;
 }
 
-
-/* Mostra il pulsante solo su schermi piccoli */
+/* Pulsante menu mobile (Desktop: nascosto) */
 #menu-btn {
+    display: none;
     font-size: 2.5rem;
     color: gold;
     cursor: pointer;
-    display: none;
+}
+
+/* Sticky Header */
+.header .header-2.active {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
 }
 
 
-.user-icon {
-    display: inline-block;
-    font-size: 1.5rem;
-    margin-left: 20px;
-    cursor: pointer;
+/* ========================================================
+   BREAKPOINT INTERMEDIO (LAPTOP/TABLET) - 1439px
+   Nasconde SOLO la scritta per mantenere la simmetria
+   ======================================================== */
+@media (max-width: 1439px) {
+    .header .header-1 .logo span {
+        display: none; /* Nasconde "Stellar Library" testuale */
+    }
 }
 
-/*------------------------------------------------*/
-/*------------ SEZIONE ADMIN INDEX ---------------*/
-/*------------------------------------------------*/
 
+/* ========================================================
+   SEZIONE MOBILE (MAX-WIDTH: 768px)
+   ======================================================== */
+@media (max-width: 768px) {
+
+    /* --- 1. HEADER E LOGO MOBILE --- */
+    .header .header-1 {
+        display: flex; /* Override del Grid desktop */
+        flex-wrap: nowrap;
+        align-items: center;
+        padding: 1.3rem 5%;
+        gap: 3rem;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: white;
+    }
+
+    /* Reset allineamenti Grid */
+    .header .header-1 .logo,
+    .user-icon {
+        justify-self: auto;
+    }
+    .header .header-1 .search-form {
+        justify-self: auto;
+    }
+
+    .header .header-1 .logo img {
+        height: 80px;
+        max-width: 100%;
+    }
+
+    /* La scritta è già nascosta dal breakpoint 1439px, ma lo ribadiamo per sicurezza */
+    .header .header-1 .logo span {
+        display: none;
+    }
+
+    .header .header-1 .search-form {
+        width: 100%;
+        max-width: none;
+        margin-top: 0;
+    }
+
+    .header .header-1 .search-form input {
+        font-size: 1.4rem;
+    }
+
+    /* --- 2. MENU HAMBURGER E BARRA BLU --- */
+    #menu-btn {
+        display: block;
+        font-size: 2.5rem;
+        color: #fff;
+        cursor: pointer;
+        transition: color 0.3s;
+        margin-left: 10px;
+    }
+
+    #menu-btn:hover {
+        color: #ffd700;
+    }
+
+    .header .header-2 {
+        position: relative;
+        overflow: visible !important;
+        z-index: 1000;
+        /* Su mobile allineiamo a sinistra per l'hamburger */
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 1rem;
+        min-height: 50px;
+    }
+
+    /* --- 3. MENU DROPDOWN (SQUADRATO) --- */
+    .header .header-2 .navbar {
+        display: none;
+        flex-direction: column;
+        justify-content: flex-start; /* Reset del center desktop */
+        position: absolute;
+        top: 100%;
+        left: 0; right: 0;
+
+        background: #191970;
+        border-radius: 0;
+
+        box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        padding: 20px 15px;
+        gap: 15px;
+        z-index: 9999;
+        border-top: 1px solid rgba(255,215,0,0.3);
+    }
+
+    .header .header-2 .navbar.show {
+        display: flex;
+    }
+
+    /* --- 4. STILE DEI LINK (SQUADRATI) --- */
+    .header .header-2 .navbar a {
+        display: block;
+        color: #fff;
+        font-size: 1.8rem;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1.5rem 2rem;
+        border-radius: 0;
+        border: none;
+        text-align: center;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .header .header-2 .navbar a:hover {
+        background-color: #ffd700;
+        color: #191970;
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    html { font-size: 55%; }
+}
+
+
+/*------------------------------------------------*/
+/*------------ SEZIONE ADMIN MENU ----------------*/
+/*------------------------------------------------*/
 .dropdown2 {
     position: relative;
     display: inline-block;
@@ -393,7 +550,7 @@ section {
 }
 
 .dropdown2 a.dropbtn:hover {
-    color: #ffd700; /* giallo dorato al passaggio */
+    color: #ffd700;
 }
 
 .dropdown2-content {
@@ -404,8 +561,7 @@ section {
     border-radius: 4px;
     min-width: 180px;
     z-index: 10;
-    top: 100%;
-    left: 0;
+    top: 100%; left: 0;
     overflow: hidden;
 }
 
@@ -414,123 +570,19 @@ section {
     padding: 12px 16px;
     display: block;
     text-decoration: none;
-    font-size: 25%;
+    font-size: 1.4rem;
     border-bottom: 1px solid #f0f0f0;
     transition: background 0.2s, padding-left 0.2s;
 }
 
-.dropdown2-content a:last-child {
-    border-bottom: none;
-}
-
-.dropdown2-content a:hover {
-
-    color: #ffd700;
-}
-
-.dropdown2:hover .dropdown2-content {
-    display: block;
-}
-
-/*------------------------------------------------*/
-/*------------ SEZIONE STICKY HEADER -------------*/
-/*------------------------------------------------*/
-.header .header-2.active {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1000;
-}
-/*------------------------------------------------*/
-/*----------- SEZIONE FORM LOGIN/REG -------------*/
-/*------------------------------------------------*/
-.header .login-form {
-    position: absolute;
-    top: 120%;
-    right: 2rem;
-    width: 35rem;
-    box-shadow: var(--box-shadow);
-    padding: 2rem;
-    border-radius: 0.5rem;
-    background: #fff;
-    text-align: center;
-    display: none;
-}
-
-.header .login-form.active {
-    display: block;
-}
-
-.header .login-form h3 {
-    font-size: 2.5rem;
-    text-transform: uppercase;
-    color: var(--black);
-}
-
-.header .login-form .box {
-    margin: 0.7rem 0;
-    background: #eee;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    font-size: 1.6rem;
-    color: var(--black);
-    text-transform: none;
-    width: 100%;
-}
-.header .login-form .box:hover {
-    background: gold;  /* Cambiato da #eee a gold per hover */
-}
-
-.login-form p{
-font-size: 1.6rem;
-}
-.register-form p{
-    font-size: 1.6rem;
-}
-
-/*------------------------------------------------*/
-/*------------ SEZIONE MENU INDEX --------------*/
-/*------------------------------------------------*/
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropbtn {
-    padding: 10px 20px;
-    color: white;
-    text-decoration: none;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #001E6C;
-    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
-    z-index: 1;
-    min-width: 160px;
-}
-
-.dropdown-content a {
-    color: white;
-    padding: 12px 16px;
-    display: block;
-    text-decoration: none;
-}
-
-.dropdown-content a:hover {
-    background-color: #0032a5;
-}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
+.dropdown2-content a:last-child { border-bottom: none; }
+.dropdown2-content a:hover { color: #ffd700; }
+.dropdown2:hover .dropdown2-content { display: block; }
 
 
 /*------------------------------------------------*/
 /*-------------- SEZIONE HOME INDEX --------------*/
 /*------------------------------------------------*/
-
-
 .home {
     background: url(../images/banner-bg.jpg) no-repeat;
     background-size: cover;
@@ -544,19 +596,14 @@ font-size: 1.6rem;
     width: 80%;
 }
 
-/* Testo */
 .home .content {
     text-align: center;
     padding: 1rem;
     max-width: 100%;
     margin-top: 2rem;
 }
-.home .content .btn{
-    text-align: center;
-}
+.home .content .btn{ text-align: center; }
 
-
-/* Testi */
 .home .row .content h3 {
     color: #191970;
     font-size: 3.2rem;
@@ -569,8 +616,34 @@ font-size: 1.6rem;
     line-height: 1.8;
 }
 
+/* Media Queries Home */
+@media (max-width: 768px) {
+    .home .row {
+        flex-direction: column;
+        width: auto;
+    }
+    .home .content { max-width: 80%; }
+}
 
+@media (min-width: 768px) {
+    .home .row {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 3rem;
+        width: auto;
+    }
+    .home .content { max-width: 60%; }
+    .home .row .content h3 { font-size: 3rem; }
+}
 
+@media (min-width: 1200px) {
+    .home .row {
+        padding: 4rem 8rem;
+        width: 70%;
+    }
+    .home .row .content h3 { font-size: 4rem; }
+}
 
 
 /*------------------------------------------------*/
@@ -582,9 +655,7 @@ font-size: 1.6rem;
     overflow: hidden;
 }
 
-.swiper-wrapper {
-    display: flex;
-}
+.swiper-wrapper { display: flex; }
 
 .swiper-slide {
     flex-shrink: 0;
@@ -600,7 +671,6 @@ font-size: 1.6rem;
     text-align: center;
 }
 
-
 .featured .featured-slider .box .image {
     padding: 1rem;
     background: linear-gradient(15deg, #eee 30%, #fff 30.1%);
@@ -611,9 +681,7 @@ font-size: 1.6rem;
     transform: translateY(6rem);
 }
 
-.featured .featured-slider .box .image img {
-    height: 25rem;
-}
+.featured .featured-slider .box .image img { height: 25rem; }
 
 .featured .featured-slider .box .icons {
     border-bottom: var(--border-hover);
@@ -625,9 +693,7 @@ font-size: 1.6rem;
     transition: transform 0.3s;
 }
 
-.featured .featured-slider .box:hover .icons {
-    transform: translateY(0%);
-}
+.featured .featured-slider .box:hover .icons { transform: translateY(0%); }
 
 .featured .featured-slider .box .icons a {
     color: var(--black);
@@ -662,15 +728,12 @@ font-size: 1.6rem;
     text-decoration: line-through;
 }
 
-
-/* Contenitore slider */
 .featured .featured-slider {
     width: 100%;
     position: relative;
     padding: 0 2rem;
 }
 
-/* Frecce di navigazione */
 .swiper-button-next,
 .swiper-button-prev {
     position: absolute;
@@ -679,30 +742,18 @@ font-size: 1.6rem;
     z-index: 10;
     background-color: #fff;
     border: var(--border-hover);
-    height: 4rem;
-    width: 4rem;
+    height: 4rem; width: 4rem;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
 }
 
-.swiper-button-next {
-    right: 10px;
-}
+.swiper-button-next { right: 10px; }
+.swiper-button-prev { left: 10px; }
 
-.swiper-button-prev {
-    left: 10px;
-}
-.swiper-button-next img{
-    height: 75%;
-    width: 75%;
-}
-.swiper-button-prev img{
-    height: 75%;
-    width: 75%;
-    transform: scaleX(-1);
-}
+.swiper-button-next img { height: 75%; width: 75%; }
+.swiper-button-prev img { height: 75%; width: 75%; transform: scaleX(-1); }
 
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
@@ -723,7 +774,6 @@ font-size: 1.6rem;
     grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
     gap: 1.5rem;
     margin-left: 20%;
-
 }
 
 .footer .box-container .box h3 {
@@ -750,189 +800,39 @@ font-size: 1.6rem;
 }
 
 .footer .share a {
-    height: 4.5rem;
-    width: 4.5rem;
+    height: 4.5rem; width: 4.5rem;
     line-height: 4.5rem;
     font-size: 1.7rem;
     color: #fff;
-    background: var(--blue); /* FIXED */
+    background: var(--blue);
     margin: 0 0.3rem;
     border-radius: 0.5rem;
 }
-.footer .share a:hover {
-    background: gold;  /* Cambiato da var(--green) a gold */
-}
-.footer .credit{
+.footer .share a:hover { background: gold; }
+
+.footer .credit {
     border-top: var(--border);
     margin-top: 2rem;
     padding: 2.5rem 1rem 1rem;
     font-size: 2rem;
     color: var(--blue);
     text-align: center;
-    /* padding-bottom: 10rem; */
 }
 
-/*------------------------------------------------*/
-/*---------------- MEDIA QUERIES -----------------*/
-/*------------------------------------------------*/
 @media (max-width: 768px) {
-
     .footer .box-container {
         display: flex;
         flex-direction: row;
         gap: 5rem;
         margin-left: 18%;
     }
-
 }
 
-@media (max-width: 768px) {
-    html {
-        font-size: 55%;
-    }
-
-    .header .header-1 .search-form {
-        margin-top: 1rem;
-    }
-
-    .home .row {
-        flex-direction: column;
-        width: auto;
-    }
-    .home .content{
-        max-width: 80%;
-    }
-}
-@media (max-width: 768px) {
-
-    .header .header-1 {
-        flex-wrap: nowrap;
-        align-items: center;
-        padding: 1.3rem 13%;
-        gap: 0.5rem;
-    }
-
-    .header .header-1 .logo {
-        white-space: nowrap;
-    }
-
-    .header .header-1 .search-form {
-        width: 50%;
-    }
-
-    .header .header-1 .search-form input {
-        font-size: 1.2rem;
-        padding: 0 0.8rem;
-    }
-
-    .header .header-1 .search-form label {
-        font-size: 1.6rem;
-    }
-
-    .user-name {
-        font-size: 1.3rem;
-    }
-
-    .dropdown-content {
-        min-width: 120px;
-        padding: 8px;
-    }
-
-    .logout-btn {
-        font-size: 0.8rem;
-        padding: 6px 8px;
-    }
-
-    .user-icon {
-        font-size: 1.4rem;
-        margin-left: 10px;
-    }
-    .header .header-1,
-    .header .header-2.active {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        background-color: white;
-    }
-}
-/* TABLET: da 768px in su, elementi affiancati */
-@media (min-width: 768px) {
-    .home .row {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding: 3rem;
-        width: auto;
-    }
-
-    .home .content{
-        max-width: 60%;
-    }
-
-    .home .row .content h3 {
-        font-size: 3rem;
-    }
-
-    .header .header-1 .logo {
-        font-size: 1.8rem;
-        font-weight: bolder;
-        color: var(--black);
-    }
-}
-
-/* DESKTOP LARGO: più spazio e proporzioni generose */
-@media (min-width: 1200px) {
-    .home .row {
-        padding: 4rem 8rem;
-        width: 70%;
-    }
-    .home .row .content h3 {
-        font-size: 4rem;
-    }
-
-}
-@media (max-width: 768px) {
-    #menu-btn {
-        display: block;
-        margin-left: 1rem;
-        padding-top: 0.6rem;
-    }
-
-    .header .header-1 .search-form {
-        margin-top: 1rem;
-    }
-
-    .header .header-2 {
-        background: var(--blue);
-        min-height: 4.3rem;
-    }
-
-    .header .header-2 .navbar {
-        display: none;
-        flex-direction: column;
-        padding: 0.5rem;
-        background: #191970;
-    }
-
-    .header .header-2 .navbar.show {
-        display: flex;
-    }
-
-    .header .header-2 .navbar a {
-        font-size: 2rem; /* 👈 leggibile ma più piccola */
-        color: white;
-        padding: 0.6rem 1rem;
-        text-align: center;
-        border-top: 0.2rem solid gold;
-
-    }
-
-}
 /*------------------------------------------------*/
 /*--------------- PAGINA CATALOGO ----------------*/
 /*------------------------------------------------*/
 .catalogo-section {
-    padding: 4rem 5vw; /* Usa vw per più fluidità sui monitor larghi */
+    padding: 4rem 5vw;
     min-height: 100vh;
 }
 
@@ -942,10 +842,7 @@ font-size: 1.6rem;
     gap: 3rem;
 }
 
-
-/*------------------------------------------------*/
-/*---------- SIDEBAR FILTRI CATALOGO*-------------*/
-/*------------------------------------------------*/
+/* Sidebar Filtri */
 .filtri {
     flex: 0 0 270px;
     max-width: 320px;
@@ -983,14 +880,6 @@ font-size: 1.6rem;
     width: 100%;
     margin: 0.5rem 0 1rem 0;
 }
-.filtri select,
-.filtri input {
-    width: 100%;
-    margin-bottom: 1rem;
-    padding: 0.5rem;
-    font-size: 1.4rem;
-}
-
 .filtri .btn {
     width: 100%;
     padding: 1.1rem 0;
@@ -1001,11 +890,9 @@ font-size: 1.6rem;
     margin-top: 1rem;
     cursor: pointer;
 }
+.filtri .btn:hover { background-color: #001E6C; }
 
-.filtri .btn:hover {
-    background-color: #001E6C;
-}
-
+/* Griglia Libri */
 .risultati-libri {
     flex: 1;
     display: grid;
@@ -1013,9 +900,7 @@ font-size: 1.6rem;
     gap: 1rem;
     padding: 0.5rem;
 }
-.risultati-libri p{
-    font-size: 2.5rem;
-}
+.risultati-libri p { font-size: 2.5rem; }
 
 .libro-box {
     padding: 2.1rem 1.2rem 1.6rem 1.2rem;
@@ -1046,13 +931,11 @@ font-size: 1.6rem;
     margin-bottom: 0.5rem;
     color: #232;
 }
-
 .libro-box p {
     margin: 0.3rem 0;
     font-size: 1.4rem;
     color: #444;
 }
-
 .libro-box .btn {
     background-color: #001E6C;
     color: white;
@@ -1065,82 +948,36 @@ font-size: 1.6rem;
     margin-bottom: 0.3rem;
     transition: background 0.19s;
 }
-
 .libro-box .btn:hover {
     background-color: #FFD700;
     color: #001E6C;
 }
 
-/*------------------------------------------------*/
-/*---------- MEDIA QUERIES CATALOGO --------------*/
-/*------------------------------------------------*/
+/* Media Queries Catalogo */
 @media (min-width: 480px) {
-    .risultati-libri {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1.2rem;
-    }
-    .catalogo-section {
-        padding: 2rem 2vw;
-    }
-    .filtri {
-        padding: 1.5rem 1rem;
-    }
+    .risultati-libri { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+    .catalogo-section { padding: 2rem 2vw; }
+    .filtri { padding: 1.5rem 1rem; }
 }
-
-
 @media (min-width: 700px) {
-    .risultati-libri {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1.6rem;
-    }
-    .filtri select, .filtri input[type="number"], .filtri .btn {
-        font-size: 1.6rem;
-        padding: 0.7rem 0.7rem;
-    }
-    .libro-box {
-        min-height: 220px;
-        padding: 1.2rem 0.7rem 1rem 0.7rem;
-    }
-    .catalogo-section {
-        padding: 2.5rem 2vw;
-    }
+    .risultati-libri { grid-template-columns: repeat(3, 1fr); gap: 1.6rem; }
+    .filtri select, .filtri input, .filtri .btn { font-size: 1.6rem; padding: 0.7rem; }
+    .libro-box { min-height: 220px; padding: 1.2rem 0.7rem 1rem 0.7rem; }
+    .catalogo-section { padding: 2.5rem 2vw; }
 }
-
 @media (min-width: 1000px) {
-    .catalogo-container {
-        flex-direction: row;
-        gap: 2.5rem;
-    }
-    .filtri {
-        max-width: 320px;
-        width: 100%;
-        margin-bottom: 0;
-        min-width: 220px;
-        padding: 2.5rem 2rem 2rem 2rem;
-    }
-    .risultati-libri {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 2.2rem;
-    }
-    .catalogo-section {
-        padding: 2.5rem 2vw;
-    }
+    .catalogo-container { flex-direction: row; gap: 2.5rem; }
+    .filtri { max-width: 320px; width: 100%; min-width: 220px; padding: 2.5rem; }
+    .risultati-libri { grid-template-columns: repeat(4, 1fr); gap: 2.2rem; }
 }
-
 @media (min-width: 1400px) {
-    .risultati-libri {
-        grid-template-columns: repeat(5, 1fr);
-        gap: 2.5rem;
-    }
+    .risultati-libri { grid-template-columns: repeat(5, 1fr); gap: 2.5rem; }
 }
-
 
 /*------------------------------------------------*/
 /*------------ PAGINA ORDINI UTENTI --------------*/
 /*------------------------------------------------*/
-body.ordiniUtenti .ordini-container {
-    padding: 40px 80px;
-}
+body.ordiniUtenti .ordini-container { padding: 40px 80px; }
 
 body.ordiniUtenti table {
     width: 100%;
@@ -1163,27 +1000,13 @@ body.ordiniUtenti th {
     text-align: left;
 }
 
-body.ordiniUtenti tr:hover {
-    background-color: #f1f1f1;
-}
+body.ordiniUtenti tr:hover { background-color: #f1f1f1; }
+body.ordiniUtenti h1 { font-size: 2.8rem; color: #001E6C; margin-bottom: 20px; text-align: center !important; }
+body.ordiniUtenti p { font-size: 2rem; color: #001E6C; margin-bottom: 20px; text-align: center !important; }
 
-body.ordiniUtenti h1 {
-    font-size: 2.8rem;
-    color: #001E6C;
-    margin-bottom: 20px;
-    text-align: center !important;
-}
-
-body.ordiniUtenti p {
-    font-size: 2rem;
-    color: #001E6C;
-    margin-bottom: 20px;
-    text-align: center !important;
-}
 /*------------------------------------------------*/
 /*---------- PAGINA RECENSIONI UTENTI ------------*/
 /*------------------------------------------------*/
-/* Contenitore generale */
 body.RecensioniUtenti .recensioni-container {
     width: 90%;
     margin: 50px auto;
@@ -1193,139 +1016,42 @@ body.RecensioniUtenti .recensioni-container {
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', sans-serif;
 }
-
-body.RecensioniUtenti .recensioni-container h1 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #333;
+body.RecensioniUtenti .recensioni-container h1 { text-align: center; margin-bottom: 30px; color: #333; }
+body.RecensioniUtenti table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+body.RecensioniUtenti table thead { background-color: #f4f4f4; color: #444; }
+body.RecensioniUtenti table th, body.RecensioniUtenti table td {
+    padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; font-size: 14px;
 }
-
-/* Tabella */
-body.RecensioniUtenti table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-body.RecensioniUtenti table thead {
-    background-color: #f4f4f4;
-    color: #444;
-}
-
-body.RecensioniUtenti table th,
-body.RecensioniUtenti table td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    font-size: 14px;
-}
-
-body.RecensioniUtenti table tbody tr:hover {
-    background-color: #f9f9f9;
-}
-
-/* Bottone elimina */
+body.RecensioniUtenti table tbody tr:hover { background-color: #f9f9f9; }
 body.RecensioniUtenti button {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-    transition: background-color 0.2s ease;
+    background-color: #e74c3c; color: white; border: none; padding: 6px 12px;
+    border-radius: 4px; cursor: pointer; font-size: 13px; transition: background 0.2s;
 }
+body.RecensioniUtenti button:hover { background-color: #c0392b; }
 
-body.RecensioniUtenti button:hover {
-    background-color: #c0392b;
-}
 /*------------------------------------------------*/
 /*------------ PAGINA AGGIUNTA LIBRO -------------*/
 /*------------------------------------------------*/
-body.AggiuntaLibro {
-    background-color: #f9f9f9;
-    font-family: 'Segoe UI', sans-serif;
-}
+body.AggiuntaLibro { background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif; }
 body.AggiuntaLibro .form-container {
-    width: 60%;
-    margin: 50px auto;
-    background: #fff;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 60%; margin: 50px auto; background: #fff;
+    padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
-
-body.AggiuntaLibro h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 30px;
+body.AggiuntaLibro h1 { text-align: center; color: #333; margin-bottom: 30px; }
+body.AggiuntaLibro form { display: flex; flex-wrap: wrap; gap: 20px; }
+body.AggiuntaLibro .form-group { flex: 1 1 45%; display: flex; flex-direction: column; }
+body.AggiuntaLibro .form-group.full { flex: 1 1 100%; }
+body.AggiuntaLibro label { font-weight: 500; margin-bottom: 5px; color: #444; }
+body.AggiuntaLibro input, body.AggiuntaLibro select {
+    padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px; transition: 0.2s;
 }
-
-body.AggiuntaLibro form {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-body.AggiuntaLibro .form-group {
-    flex: 1 1 45%;
-    display: flex;
-    flex-direction: column;
-}
-
-body.AggiuntaLibro .form-group.full {
-    flex: 1 1 100%;
-}
-
-body.AggiuntaLibro label {
-    font-weight: 500;
-    margin-bottom: 5px;
-    color: #444;
-}
-
-body.AggiuntaLibro input,
-body.AggiuntaLibro select {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    transition: 0.2s ease;
-}
-
-body.AggiuntaLibro input:focus,
-body.AggiuntaLibro select:focus {
-    border-color: #2980b9;
-    outline: none;
-}
-
+body.AggiuntaLibro input:focus, body.AggiuntaLibro select:focus { border-color: #2980b9; }
 body.AggiuntaLibro button {
-    width: 100%;
-    background-color: #2980b9;
-    color: white;
-    padding: 12px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    transition: 0.2s ease;
-    cursor: pointer;
+    width: 100%; background-color: #2980b9; color: white; padding: 12px;
+    font-size: 16px; border: none; border-radius: 5px; cursor: pointer; transition: 0.2s;
 }
-
-body.AggiuntaLibro button:hover {
-    background-color: #1f5f8b;
-}
-
+body.AggiuntaLibro button:hover { background-color: #1f5f8b; }
 body.AggiuntaLibro .success {
-    text-align: center;
-    background-color: #dff0d8;
-    padding: 10px;
-    border-radius: 5px;
-    color: #3c763d;
-    margin-bottom: 20px;
+    text-align: center; background-color: #dff0d8; padding: 10px;
+    border-radius: 5px; color: #3c763d; margin-bottom: 20px;
 }
-
-
-
-
-
-
-

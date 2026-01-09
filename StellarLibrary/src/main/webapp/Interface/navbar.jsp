@@ -73,17 +73,23 @@
 
 <header class="header white-bg">
   <div class="header-1">
-    <a href="home" class="logo navy">
-      <i class="fas fa-book navy"></i> Stellar Library
+
+    <a href="home" class="logo">
+
+        <img src="${pageContext.request.contextPath}/images/LogoStellarLibraryNoBg.png" alt="Stellar Library">
+
+      <span>Stellar Library</span>
+
     </a>
 
     <form action="" class="search-form" onsubmit="return false;">
-      <input type="text" name="search" placeholder="Cerca qui..." id="search-box" autocomplete="off">
+      <input type="text" name="search" placeholder="Cerca il tuo libro..." id="search-box" autocomplete="off">
+
+      <label for="search-box" class="fas fa-search"></label>
+
       <div id="autocomplete-list" class="autocomplete-items"></div>
     </form>
 
-
-    <!-- USER ICON / NOME -->
     <div class="user-icon">
       <c:choose>
         <c:when test="${not empty sessionScope.utente}">
