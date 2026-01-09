@@ -53,24 +53,30 @@
     <h2>Recensioni</h2>
     <c:choose>
       <c:when test="${not empty recensioni}">
-        <ul>
-          <c:forEach var="r" items="${recensioni}">
-            <li>
-              <strong>${r.titolo}</strong> – <em>${r.valutazione}/5</em><br>
-              <p>${r.testo}</p>
-              <span class="recensione-data">
-                  <fmt:formatDate value="${r.data}" pattern="dd/MM/yyyy" />
+        <ul class="recensioni-list"> <c:forEach var="r" items="${recensioni}">
+          <li>
+            <div class="recensione-header">
+              <strong>${r.titolo}</strong>
+              <span class="recensione-rating">
+                      <i class="fas fa-star"></i> ${r.valutazione}/5
+                  </span>
+            </div>
+            <p>${r.testo}</p>
+            <span class="recensione-data">
+                  Pubblicato il: <fmt:formatDate value="${r.data}" pattern="dd/MM/yyyy" />
               </span>
-            </li>
-          </c:forEach>
+          </li>
+        </c:forEach>
         </ul>
       </c:when>
       <c:otherwise>
-        <p>Nessuna recensione disponibile.</p>
+        <p>Nessuna recensione disponibile per questo libro. Sii il primo a scriverne una!</p>
       </c:otherwise>
     </c:choose>
   </div>
-</div>
+
+  <hr class="custom-divider">
+
 <!-- Form per lasciare una nuova recensione -->
 <c:if test="${not empty errore}">
   <div class="toast error-toast">${errore}</div>
@@ -110,7 +116,7 @@
 
 
 
-<script src="js/index.js"></script>
+  <script src="js/index.js?v=${pageContext.session.id}"></script>
 
 </body>
 </html>

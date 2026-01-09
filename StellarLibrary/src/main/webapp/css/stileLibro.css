@@ -1,6 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #fff;
+    background-color: #fbfcff; /* Leggero sfondo per dare profondità */
     color: #111;
     margin: 0;
     padding: 0;
@@ -12,17 +12,25 @@ body {
     margin: auto;
 }
 
+/* ===========================
+   LAYOUT LIBRO
+   =========================== */
 .book-layout {
     display: flex;
     gap: 60px;
-    margin-bottom: 50px;
+    margin-bottom: 60px;
     align-items: flex-start;
+    background: #fff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
 }
 
 .book-image img {
     width: 350px;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    object-fit: cover;
 }
 
 .book-info {
@@ -30,302 +38,238 @@ body {
 }
 
 .book-info h1 {
-    font-size: 4rem;
-    margin-bottom: 15px;
+    font-size: 3.5rem; /* Leggermente ridotto per eleganza */
+    margin-bottom: 20px;
     color: #001E6C;
+    line-height: 1.1;
 }
 
 .book-info p {
-    font-size: 2rem;
-    margin: 6px 0;
+    font-size: 1.6rem;
+    margin: 8px 0;
+    color: #444;
 }
 
 .book-info p strong {
     display: inline-block;
-    min-width: 130px;
-    color: #333;
+    min-width: 140px;
+    color: #111;
+    font-weight: 700;
 }
 
 .book-price {
-    margin-top: 25px;
-    font-size: 1.6rem;
+    margin-top: 30px;
+    font-size: 1.8rem;
     color: #B12704;
-    font-weight: bold;
+    font-weight: 800;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.book-price form {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.book-price input[type="number"] {
+    padding: 8px;
+    font-size: 1.4rem;
+    width: 60px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .add-to-cart-btn {
     background-color: #001E6C;
     color: white;
     border: none;
-    padding: 10px 25px;
-    margin-top: 15px;
-    font-size: 2rem;
+    padding: 12px 30px;
+    font-size: 1.6rem;
     cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s;
+    font-weight: bold;
 }
 
 .add-to-cart-btn:hover {
     background-color: #0032a5;
+    transform: translateY(-2px);
 }
 
+/* ===========================
+   SEZIONE RECENSIONI (LISTA)
+   =========================== */
 .recensioni-section {
-    border-top: 1px solid #ddd;
-    padding-top: 30px;
+    margin-top: 40px;
 }
 
 .recensioni-section h2 {
-    font-size: 3rem;
+    font-size: 2.8rem;
+    margin-bottom: 25px;
+    color: #001E6C;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.recensioni-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.recensioni-list li {
+    background: #fff;
+    border: 1px solid #eef0f5;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    transition: transform 0.2s;
+}
+
+.recensioni-list li:hover {
+    transform: translateX(5px);
+    border-left: 4px solid #001E6C;
+}
+
+.recensione-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 10px;
+}
+
+.recensione-header strong {
+    font-size: 1.4rem;
     color: #001E6C;
 }
 
-.recensioni-section p,
-.recensioni-section li {
-    font-size: 1.5rem;
-    line-height: 1.5;
+.recensione-rating {
+    color: #f39c12; /* Colore oro per le stelle/voto */
+    font-weight: bold;
 }
-@media (max-width: 768px) {
 
-    .container {
-        padding: 20px 10px;
-    }
-
-    .book-layout {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .book-image {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-    }
-
-    .book-image img {
-        max-width: 40%;
-        height: auto;
-    }
-
-
-    .book-info {
-        width: 100%;
-        text-align: center;
-    }
-
-    .book-info h1 {
-        font-size: 2.2rem;
-        margin-bottom: 10px;
-    }
-
-    .book-info p {
-        font-size: 1.7rem;
-        line-height: 1.4;
-    }
-
-    .book-info p strong {
-        display: block;
-        margin-bottom: 4px;
-    }
-
-    .book-price {
-        font-size: 1.4rem;
-    }
-
-    .add-to-cart-btn {
-        font-size: 1.6rem;
-        width: 90%;
-        max-width: 280px;
-    }
-
-    .recensioni-section {
-        padding-top: 20px;
-    }
-
-    .recensioni-section h2 {
-        font-size: 1.8rem;
-    }
-
-    .recensioni-section li {
-        font-size: 1.2rem;
-    }
-
+.recensioni-list p {
+    font-size: 1.4rem;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 10px;
 }
-.recensione-form-container {
-    margin: 40px auto;
-    max-width: 600px;
-    padding: 25px;
-    border: 1px solid #ccc;
+
+.recensione-data {
+    display: block;
+    font-size: 1.1rem;
+    color: #888;
+    text-align: right;
+    font-style: italic;
+}
+
+/* ===========================
+   TOAST DI ERRORE
+   =========================== */
+.toast.error-toast {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #f87171;
+    padding: 15px 20px;
     border-radius: 8px;
-    background-color: #f7f7f7;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    text-align: center;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+/* ===========================
+   ELEMENTO DI SEPARAZIONE
+   =========================== */
+.custom-divider {
+    border: 0;
+    height: 3px; /* Aumentato da 1px a 3px per visibilità */
+    /* Gradiente molto più carico: colore pieno al centro (#001E6C) */
+    background-image: linear-gradient(to right,
+    rgba(0, 30, 108, 0),
+    #001E6C,
+    rgba(0, 30, 108, 0)
+    );
+    margin: 60px 0; /* Spaziatura ampia */
+    opacity: 0.9; /* Quasi totalmente opaco */
+}
+
+/* ===========================
+   FORM RECENSIONE
+   =========================== */
+.recensione-form-container {
+    width: 100%;
+    max-width: 100%;
+    background: #fff;
+    border: 1px solid #d1d9e6; /* Bordo leggermente più scuro per definirlo meglio */
+    border-radius: 8px;
+    padding: 30px;
+    box-sizing: border-box;
+    /* Ombra statica leggermente più marcata per staccarlo dallo sfondo */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+
+    /* Nota: Ho rimosso 'transition', 'position' e l'intero blocco :hover */
 }
 
 .recensione-form-container h3 {
-    color: #1b1b80 !important;
-    font-size: 2rem !important;
-    margin-bottom: 20px;
+    text-align: center;
+    margin: 0 0 25px;
+    color: #001E6C;
+    font-size: 2.2rem;
 }
 
+/* Il resto del form (griglia, input, bottoni) rimane invariato per mantenere la funzionalità */
 form.recensione-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+    display: grid;
+    grid-template-columns: 1fr 220px;
+    gap: 20px;
+    align-items: start;
 }
 
 form.recensione-form .form-group {
     display: flex;
     flex-direction: column;
+    gap: 8px;
+}
+
+form.recensione-form .form-group:nth-child(2) {
+    grid-column: 1 / -1; /* Textarea su tutta la riga */
 }
 
 form.recensione-form .form-group label {
-    font-weight: bold;
-    color: #111;
-    margin-bottom: 6px;
-}
-
-form.recensione-form .form-group input[type="text"],
-form.recensione-form .form-group textarea,
-form.recensione-form .form-group select {
-    padding: 12px !important;
-    font-size: 1.4rem !important;
-    border: 1px solid #ccc !important;
-    border-radius: 5px;
-    background-color: white !important;
-    color: #000 !important;
-}
-
-form.recensione-form button {
-    background-color: #1b1b80;
-    color: white;
-    padding: 12px;
-    font-size: 1.4rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s ease-in-out;
-}
-
-form.recensione-form button:hover {
-    background-color: #000063;
-}
-.recensione-data {
-    display: block;
-    font-family: 'Courier New', Courier, monospace; /* stile digitale */
-    font-size: 1.2rem; /* leggermente più piccolo */
-    color: #555; /* grigio soft */
-    margin-top: 4px;
-    margin-bottom: 8px;
-}
-
-/* ===========================
-   FORM RECENSIONE
-      =========================== */
-
-.recensione-form-container{
-    margin: 46px auto;
-    max-width: 760px;
-    padding: 26px;
-    border-radius: 16px;
-    background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
-    border: 1px solid rgba(0, 30, 108, 0.16);
-    box-shadow: 0 18px 40px rgba(0,0,0,0.10);
-    position: relative;
-}
-
-.recensione-form-container::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: 16px;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(0,30,108,.35), rgba(27,27,128,.12));
-    -webkit-mask-image:
-            linear-gradient(#000, #000),
-            linear-gradient(#000, #000);
-    -webkit-mask-origin: content-box, border-box;
-    -webkit-mask-clip: content-box, border-box;
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-}
-
-
-
-.recensione-form-container h3{
-    text-align: center;
-    margin: 0 0 18px;
-    color: #001E6C !important;
-    font-size: 2.4rem !important;
-    letter-spacing: -0.02em;
-}
-
-
-form.recensione-form{
-    display: grid;
-    grid-template-columns: 1fr 220px;
-    gap: 16px 18px;
-    align-items: start;
-}
-
-form.recensione-form .form-group{
-    display: grid;
-    gap: 6px;
-}
-
-form.recensione-form .form-group:nth-child(2){
-    grid-column: 1 / -1; /* textarea su tutta la riga */
-}
-
-/* Label */
-form.recensione-form .form-group label{
     font-weight: 700;
     color: #111;
-    margin: 0;
     font-size: 1.35rem;
 }
 
-/* Campi input */
-form.recensione-form .form-group input[type="text"],
-form.recensione-form .form-group textarea,
-form.recensione-form .form-group select{
-    padding: 13px 14px !important;
-    font-size: 1.5rem !important;
-    border-radius: 12px;
-    border: 1px solid rgba(17, 24, 39, 0.16) !important;
-    background: rgba(255,255,255,0.85) !important;
-    color: #0f172a !important;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
-    transition: border-color .16s ease, box-shadow .16s ease, transform .12s ease, background-color .16s ease;
+form.recensione-form input[type="text"],
+form.recensione-form textarea,
+form.recensione-form select {
+    padding: 12px 14px;
+    font-size: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(17, 24, 39, 0.2);
+    background: #fff;
+    color: #0f172a;
+    width: 100%;
+    box-sizing: border-box; /* Importante per padding */
+    font-family: inherit;
 }
 
-form.recensione-form .form-group textarea{
-    min-height: 155px;
+form.recensione-form textarea {
+    min-height: 120px;
     resize: vertical;
-    line-height: 1.45;
 }
 
-form.recensione-form .form-group select{
-    cursor: pointer;
-}
-
-form.recensione-form :is(input, textarea, select, button):focus{
-    border-color: rgba(0, 30, 108, 0.55) !important;
-    box-shadow: 0 0 0 4px rgba(0, 30, 108, 0.12);
-}
-
-form.recensione-form :is(input, textarea, select, button):focus-visible{
-    outline: 3px solid rgba(0, 30, 108, 0.28);
-    outline-offset: 2px;
-}
-
-
-form.recensione-form button{
+form.recensione-form button {
     grid-column: 1 / -1;
-    margin-top: 6px;
-    padding: 13px 16px;
+    margin-top: 10px;
+    padding: 14px;
     border: 0;
     border-radius: 12px;
     background: linear-gradient(135deg, #001E6C 0%, #0032a5 100%);
@@ -333,31 +277,35 @@ form.recensione-form button{
     font-size: 1.6rem;
     font-weight: 800;
     cursor: pointer;
-    box-shadow: 0 14px 24px rgba(0, 30, 108, 0.22);
-    transition: transform .14s ease, box-shadow .14s ease, filter .14s ease;
+    box-shadow: 0 10px 20px rgba(0, 30, 108, 0.2);
+    transition: all 0.2s ease;
 }
 
-form.recensione-form button:hover{
-    transform: translateY(-1px);
-    filter: brightness(0.98);
-    box-shadow: 0 16px 30px rgba(0, 30, 108, 0.26);
+form.recensione-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 25px rgba(0, 30, 108, 0.25);
 }
 
-form.recensione-form button:active{
-    transform: translateY(0);
-    box-shadow: 0 10px 18px rgba(0, 30, 108, 0.20);
-}
+/* ===========================
+   RESPONSIVE
+   =========================== */
+@media (max-width: 768px) {
+    .container { padding: 20px; }
 
-@media (max-width: 768px){
-    form.recensione-form{
-        grid-template-columns: 1fr;
+    .book-layout {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        padding: 20px;
     }
-    .recensione-form-container{
-        padding: 18px;
-        border-radius: 14px;
-    }
-    .recensione-form-container h3{
-        font-size: 2rem !important;
-    }
-}
 
+    .book-image img {
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .book-info h1 { font-size: 2.2rem; text-align: center; }
+    .book-price form { justify-content: center; }
+
+    form.recensione-form { grid-template-columns: 1fr; }
+}

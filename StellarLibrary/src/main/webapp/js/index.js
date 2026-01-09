@@ -1,27 +1,16 @@
-// Quando il DOM è completamente caricato...
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("index.js caricato e pronto");
+    console.log("index.js caricato correttamente");
 
-    //  1. RACCOLTA ELEMENTI
+    /* =========================================
+       1. GESTIONE MENU E RICERCA (HEADER)
+       ========================================= */
     const searchForm = document.querySelector('.search-form');
     const header2 = document.querySelector('.header .header-2');
     const menuBtn = document.querySelector('#menu-btn');
     const navbar = document.querySelector('.header .header-2 .navbar');
     const searchBtn = document.querySelector('#search-btn');
 
-    // Elementi Popup Login (se usati)
-    const loginBtn = document.querySelector('.login-btn-pill'); // Nuovo selettore
-    const userForm = document.getElementById("userForm");
-    const closeBtn = document.getElementById("close-form");
-    const closeToast = document.querySelector(".close-toast");
-
-    const loginFormContainer = document.getElementById("login-form");
-    const registerFormContainer = document.getElementById("register-form");
-    const showRegisterLink = document.getElementById("show-register");
-    const showLoginLink = document.getElementById("show-login");
-    const openLoginFromCart = document.getElementById("open-login-from-cart");
-
-    //  2. MENU MOBILE (Hamburger)
+    // Toggle Menu Mobile
     if (menuBtn && navbar) {
         menuBtn.addEventListener('click', () => {
             navbar.classList.toggle('show');
@@ -29,102 +18,149 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // CHIUSURA MENU AL CLICK ESTERNO
+    // Chiudi menu cliccando fuori
     document.addEventListener('click', (event) => {
         if (navbar && navbar.classList.contains('show')) {
-            const isClickInsideMenu = navbar.contains(event.target);
-            const isClickOnBtn = menuBtn.contains(event.target);
-
-            if (!isClickInsideMenu && !isClickOnBtn) {
+            if (!navbar.contains(event.target) && !menuBtn.contains(event.target)) {
                 navbar.classList.remove('show');
                 menuBtn.classList.remove('fa-times');
             }
         }
     });
 
-    //  3. TOGGLE BARRA DI RICERCA
+    // Toggle barra di ricerca
     if (searchBtn && searchForm) {
         searchBtn.onclick = () => {
             searchForm.classList.toggle('active');
         };
     }
 
-    //  4. GESTIONE FORM LOGIN (Apre il popup se clicchi su Accedi)
-    if (loginBtn && userForm) {
-        loginBtn.onclick = () => {
-            userForm.classList.add("active");
-            if(loginFormContainer) loginFormContainer.style.display = "block";
-            if(registerFormContainer) registerFormContainer.style.display = "none";
-        };
+    /* =========================================
+       2. GESTIONE POPUP LOGIN (Corretta per Navbar)
+       ========================================= */
+    // NOTA: Qui usiamo gli ID definiti nella nuova navbar.jsp
+    const loginBtnTrigger = document.getElementById('login-btn-trigger'); // Bottone "Accedi" nella navbar
+    const loginModal = document.getElementById('user-form-modal');       // Il contenitore scuro del popup
+    const closeLoginBtn = document.getElementById('close-login-btn');    // La "X" per chiudere
+
+    // Forms interni
+    const loginFormBlock = document.getElementById('login-form');
+    const registerFormBlock = document.getElementById('register-form');
+
+    // Link per switchare
+    const linkToRegister = document.getElementById('link-to-register'); // "Non hai account? Registrati"
+    const linkToLogin = document.getElementById('link-to-login');       // "Hai account? Accedi"
+
+    // Bottone speciale nel carrello "Login per acquistare"
+    const openLoginFromCart = document.getElementById("open-login-from-cart");
+
+    // FUNZIONE: APRI POPUP
+    function openModal() {
+        if(loginModal) {
+            loginModal.style.display = "flex"; // Usa flex per centrare
+            document.body.style.overflow = "hidden"; // Blocca lo scroll della pagina sotto
+            // Reset: mostra sempre login all'apertura
+            if(loginFormBlock) loginFormBlock.style.display = 'block';
+            if(registerFormBlock) registerFormBlock.style.display = 'none';
+        }
     }
 
-    if (closeBtn && userForm) {
-        closeBtn.onclick = () => userForm.classList.remove("active");
+    // FUNZIONE: CHIUDI POPUP
+    function closeModal() {
+        if(loginModal) {
+            loginModal.style.display = "none";
+            document.body.style.overflow = "auto"; // Riattiva scroll
+        }
     }
 
-    //  5. SWITCH LOGIN / REGISTRAZIONE
-    if (showRegisterLink && showLoginLink && loginFormContainer && registerFormContainer) {
-        showRegisterLink.addEventListener("click", (e) => {
-            e.preventDefault();
-            loginFormContainer.style.display = "none";
-            registerFormContainer.style.display = "block";
+    // Event Listeners
+    if (loginBtnTrigger) {
+        loginBtnTrigger.addEventListener('click', (e) => {
+            e.preventDefault(); // Evita comportamenti strani dei link
+            openModal();
         });
+    }
 
-        showLoginLink.addEventListener("click", (e) => {
+    if (closeLoginBtn) {
+        closeLoginBtn.addEventListener('click', closeModal);
+    }
+
+    // Chiudi cliccando fuori dal box bianco
+    window.addEventListener('click', (event) => {
+        if (event.target === loginModal) {
+            closeModal();
+        }
+    });
+
+    // Switch Login -> Registrati
+    if (linkToRegister) {
+        linkToRegister.addEventListener('click', (e) => {
             e.preventDefault();
-            registerFormContainer.style.display = "none";
-            loginFormContainer.style.display = "block";
+            if(loginFormBlock) loginFormBlock.style.display = 'none';
+            if(registerFormBlock) registerFormBlock.style.display = 'block';
         });
     }
 
-    //  6. LOGIN DAL CARRELLO
-    if (openLoginFromCart && userForm) {
+    // Switch Registrati -> Login
+    if (linkToLogin) {
+        linkToLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            if(registerFormBlock) registerFormBlock.style.display = 'none';
+            if(loginFormBlock) loginFormBlock.style.display = 'block';
+        });
+    }
+
+    // Apertura dal carrello
+    if (openLoginFromCart) {
         openLoginFromCart.addEventListener("click", (e) => {
             e.preventDefault();
-            userForm.classList.add("active");
-            if(loginFormContainer) loginFormContainer.style.display = "block";
-            if(registerFormContainer) registerFormContainer.style.display = "none";
+            openModal();
         });
     }
 
-    //  7. GESTIONE TOAST
-    if (closeToast) {
-        closeToast.addEventListener("click", () => {
-            closeToast.parentElement.style.display = "none";
+    /* =========================================
+       3. GESTIONE TOAST E UTILITY
+       ========================================= */
+
+    // Chiudi Toast manuale
+    const closeToasts = document.querySelectorAll(".close-toast");
+    closeToasts.forEach(btn => {
+        btn.addEventListener("click", function() {
+            this.parentElement.style.display = "none";
         });
-    }
+    });
+
+    // Auto-hide Toast dopo 5.5 secondi
     setTimeout(() => {
-        const toast = document.querySelector('.toast');
-        if (toast) toast.style.display = 'none';
+        const toasts = document.querySelectorAll('.toast');
+        toasts.forEach(t => t.style.display = 'none');
     }, 5500);
 
-    //  8. EFFETTO SCROLL HEADER
-    const handleScroll = () => {
+    // Sticky Header Scroll
+    window.onscroll = () => {
         if (searchForm) searchForm.classList.remove('active');
         if (navbar && menuBtn) {
             navbar.classList.remove('show');
             menuBtn.classList.remove('fa-times');
         }
-        if (window.scrollY > 93) {
+        if (window.scrollY > 80) {
             header2?.classList.add('active');
         } else {
             header2?.classList.remove('active');
         }
     };
-    window.onscroll = handleScroll;
-    handleScroll();
 
-    //  9. LOADER
-    const loader = () => {
-        document.querySelector('.loader-container')?.classList.add('active');
-    };
-    const fadeOut = () => setTimeout(loader, 4000);
-    fadeOut();
+    // Loader Fade Out
+    const loaderContainer = document.querySelector('.loader-container');
+    if(loaderContainer) {
+        setTimeout(() => {
+            loaderContainer.classList.add('active'); // O remove, dipende dal tuo CSS
+        }, 4000);
+    }
 
-    //  10. SWIPER
-    const swiperContainer = document.querySelector('.featured-slider');
-    if (typeof Swiper !== 'undefined' && swiperContainer) {
-        const swiper = new Swiper('.featured-slider', {
+    // Swiper (Slider)
+    if (typeof Swiper !== 'undefined') {
+        new Swiper('.featured-slider', {
             loop: true,
             spaceBetween: 20,
             autoplay: { delay: 4500, disableOnInteraction: false },

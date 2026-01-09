@@ -99,7 +99,7 @@
 <!-- footer section ends -->
 
 <!-- custom js file link  -->
-<script src="js/index.js"></script>
+<script src="js/index.js?v=${pageContext.session.id}"></script>
 
 </body>
 </html>

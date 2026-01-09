@@ -68,7 +68,7 @@
         </div>
     </div>
 </section>
-<script src="js/index.js"></script>
+<script src="js/index.js?v=${pageContext.session.id}"></script>
 <script>
     const slider = document.getElementById('minPagine');
     const output = document.getElementById('outPagine');

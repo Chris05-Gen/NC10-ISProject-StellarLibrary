@@ -1,171 +1,384 @@
-.checkout-container {
-    max-width: 900px;
-    margin: 30px auto;
-    background: #fff;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    font-family: 'Segoe UI', sans-serif;
+:root {
+    --primary-color: #008a00; /* Verde Feltrinelli */
+    --primary-hover: #006e00;
+    --bg-color: #f4f6f9;
+    --text-color: #333;
+    --border-color: #ddd;
+    --card-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-.checkout-container h2 {
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
-    color: #333;
+body {
+    background-color: var(--bg-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 30px;
-}
-
-table thead {
-    background-color: #f4f4f4;
-}
-
-table th, table td {
-    padding: 12px;
+h1.page-title {
     text-align: center;
-    border: 1px solid #ddd;
+    margin: 30px 0;
+    font-weight: 700;
+    color: #2c3e50;
 }
 
-table img {
-    border-radius: 6px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+/* Layout a griglia: Sinistra (Form) - Destra (Riepilogo) */
+.checkout-wrapper {
+    max-width: 1200px;
+    margin: 0 auto 50px;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 30px;
+    align-items: start;
 }
 
-.radio-block {
-    display: block;
-    padding: 10px 0;
-    font-size: 16px;
+/* Sezioni (Card Bianche) */
+.checkout-section {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 25px;
+    border: 1px solid #eee;
 }
 
-.btn-checkout {
-    background-color: #28a745;
-    color: white;
-    padding: 12px 24px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
+.section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title i {
+    color: var(--primary-color);
+}
+
+/* --- STILE INDIRIZZI (Radio Card) --- */
+.address-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.address-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
     cursor: pointer;
-    transition: background 0.3s ease;
-    margin-top: 20px;
 }
 
-.btn-checkout:hover {
-    background-color: #218838;
-}
-
-.checkout-form {
-    background-color: #f9f9f9;
-    padding: 20px 30px;
-    border-radius: 10px;
-    margin-top: 30px;
-}
-
-.checkout-form h2 {
-    color: #444;
-}
-
-.checkout-form a {
-    color: #007bff;
-    text-decoration: none;
-}
-.checkout-form a:hover {
-    text-decoration: underline;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to   { opacity: 1; transform: translateY(0); }
-}
-#form-aggiungi-indirizzo {
-    background-color: #f9f9f9;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.05);
-    max-width: 600px;
-    margin: 0 auto;
-    transition: all 0.3s ease;
-}
-
-.checkout-form label {
+.address-card {
+    position: relative;
     display: block;
-    margin: 15px 0 5px;
-    font-weight: 500;
-    font-size: 1.5rem;
+    cursor: pointer;
 }
 
-.checkout-form input {
+.address-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.address-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.addr-main { font-weight: 600; font-size: 1.05rem; }
+.addr-sub { font-size: 0.9rem; color: #666; }
+.addr-phone { font-size: 0.85rem; color: #888; margin-top: 4px; }
+
+.check-icon {
+    font-size: 1.2rem;
+    color: #ccc;
+    transition: color 0.2s;
+}
+
+/* Stato Selezionato Indirizzo */
+.address-card input[type="radio"]:checked + .address-content {
+    border-color: var(--primary-color);
+    background-color: #f0fdf4;
+}
+
+.address-card input[type="radio"]:checked + .address-content .check-icon {
+    color: var(--primary-color);
+}
+
+/* Bottone Aggiungi Indirizzo */
+.btn-add-addr {
+    background: none;
+    border: 2px dashed #ccc;
+    color: #666;
+    width: 100%;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-add-addr:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: white;
+}
+
+/* --- NUOVO STILE PAGAMENTI (Card Grid) --- */
+.payment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.payment-card {
+    position: relative;
+    cursor: pointer;
+}
+
+.payment-card input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.payment-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    background: white;
+    transition: all 0.2s ease;
+    text-align: center;
+    height: 100%;
+    min-height: 100px;
+    color: #555;
+}
+
+.payment-content i {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    color: #777;
+    transition: color 0.2s;
+}
+
+.payment-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+/* Stato Selezionato Pagamento */
+.payment-card input[type="radio"]:checked + .payment-content {
+    border-color: var(--primary-color);
+    background-color: #f0fdf4;
+    color: var(--primary-color);
+    box-shadow: 0 4px 10px rgba(0, 138, 0, 0.15);
+}
+
+.payment-card input[type="radio"]:checked + .payment-content i {
+    color: var(--primary-color);
+}
+
+.payment-card:hover .payment-content {
+    border-color: #bbb;
+}
+
+/* --- FORM AGGIUNTA INDIRIZZO (Nascosto) --- */
+#form-aggiungi-indirizzo {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 6px;
+    border-radius: 4px;
+    font-size: 1rem;
 }
 
-.form-buttons {
+.form-group input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+/* --- COLONNA DESTRA: RIEPILOGO --- */
+.summary-sticky {
+    position: sticky;
+    top: 20px;
+}
+
+.summary-items {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 5px;
+}
+
+.summary-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.summary-item img {
+    width: 50px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.item-info h4 {
+    margin: 0 0 5px;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.item-meta {
+    font-size: 0.85rem;
+    color: #777;
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
+    width: 100%;
 }
 
-.btn-checkout {
-    background-color: #28a745;
-    border: none;
-    padding: 10px 25px;
+.summary-totals {
+    border-top: 2px solid #eee;
+    padding-top: 15px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.summary-row.total {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #333;
+    margin-top: 15px;
+}
+
+/* Bottoni */
+.btn-confirm {
+    width: 100%;
+    background-color: var(--primary-color);
     color: white;
-    border-radius: 5px;
-    font-weight: bold;
+    padding: 15px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 700;
     cursor: pointer;
+    margin-top: 20px;
     transition: background 0.3s;
 }
 
-.btn-checkout:hover {
-    background-color: #218838;
+.btn-confirm:hover {
+    background-color: var(--primary-hover);
 }
 
 .btn-secondary {
-    background-color: #ddd;
-    border: none;
-    padding: 10px 25px;
+    background: #e0e0e0;
     color: #333;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background 0.3s;
-    max-height: 4rem;
 }
 
-.btn-secondary:hover {
-    background-color: #bbb;
-}
-.metodopagamento select{
-    font-size: 2rem;
-}
-.radio-block {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    margin-bottom: 0.5rem;
+/* --- BOX DATI CARTA DI CREDITO (Inizialmente nascosto) --- */
+#card-details-section {
+    display: none; /* Nascosto di default */
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
-    border: 1px solid #ddd;
-    transition: border 0.2s;
-    cursor: pointer;
+    padding: 20px;
+    margin-top: 20px;
+    animation: fadeIn 0.4s ease-in-out;
 }
 
-.radio-block input[type="radio"] {
-    width: 2rem;
-    height: 2rem;
-    accent-color: #27408B; /* Richiamo al blu usato nel tuo tema */
-    margin-right: 1rem;
+#card-details-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    color: #444;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
 }
 
-/* Effetto focus o checked */
-.radio-block input[type="radio"]:focus + span,
-.radio-block input[type="radio"]:checked + span {
-    border-color: #27408B;
-    font-weight: bold;
+/* Griglia per i campi della carta */
+.card-form-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr; /* Numero carta largo, Scadenza e CVV stretti */
+    gap: 15px;
 }
 
+@media (max-width: 600px) {
+    .card-form-grid {
+        grid-template-columns: 1fr; /* Su mobile una colonna sola */
+    }
+}
 
+/* Stile per gli input della carta per differenziarli un po' */
+.card-input {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 12px;
+    border-radius: 4px;
+    width: 100%;
+    font-family: monospace; /* Font stile carta di credito */
+    font-size: 1.1rem;
+}
+
+.card-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 138, 0, 0.1);
+}
+
+@media (max-width: 900px) {
+    .checkout-wrapper { grid-template-columns: 1fr; }
+    .summary-sticky { position: static; order: -1; }
+}
