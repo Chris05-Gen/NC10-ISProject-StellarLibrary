@@ -90,21 +90,31 @@
       <div id="autocomplete-list" class="autocomplete-items"></div>
     </form>
 
-    <div class="user-icon">
+    <div class="user-actions-container">
       <c:choose>
+
         <c:when test="${not empty sessionScope.utente}">
-          <div class="user-dropdown">
-            <span class="user-name">Ciao, ${sessionScope.utente.nome}</span>
-            <div class="dropdown-content">
-              <form action="LogoutServlet" method="post">
-                <button type="submit" class="logout-btn">Logout</button>
-              </form>
+          <div class="logged-in-wrapper">
+            <div class="user-info-pill">
+              <i class="fas fa-user-circle"></i>
+              <span class="user-name-text">${sessionScope.utente.nome}</span>
             </div>
+
+            <form action="LogoutServlet" method="post" class="logout-form-inline">
+              <button type="submit" class="logout-icon-btn" title="Esci">
+                <i class="fas fa-sign-out-alt"></i>
+              </button>
+            </form>
           </div>
         </c:when>
+
         <c:otherwise>
-          <i class="fas fa-user" id="user-btn"></i>
+          <div id="user-btn" class="login-btn-pill">
+            <i class="fas fa-user"></i>
+            <span>Accedi</span>
+          </div>
         </c:otherwise>
+
       </c:choose>
     </div>
   </div>

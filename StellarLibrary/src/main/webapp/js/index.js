@@ -5,14 +5,12 @@ document.addEventListener("DOMContentLoaded", () => {
     //  1. RACCOLTA ELEMENTI
     const searchForm = document.querySelector('.search-form');
     const header2 = document.querySelector('.header .header-2');
-
     const menuBtn = document.querySelector('#menu-btn');
     const navbar = document.querySelector('.header .header-2 .navbar');
-
     const searchBtn = document.querySelector('#search-btn');
-    const loginBtn = document.querySelector('#login-btn');
-    const closeLoginBtn = document.querySelector('#close-login-btn');
-    const userBtn = document.getElementById("user-btn");
+
+    // Elementi Popup Login (se usati)
+    const loginBtn = document.querySelector('.login-btn-pill'); // Nuovo selettore
     const userForm = document.getElementById("userForm");
     const closeBtn = document.getElementById("close-form");
     const closeToast = document.querySelector(".close-toast");
@@ -26,24 +24,18 @@ document.addEventListener("DOMContentLoaded", () => {
     //  2. MENU MOBILE (Hamburger)
     if (menuBtn && navbar) {
         menuBtn.addEventListener('click', () => {
-            // Alterna la classe 'show' per mostrare/nascondere il menu
             navbar.classList.toggle('show');
-            // Alterna l'icona da "barre" a "X" (fa-times)
             menuBtn.classList.toggle('fa-times');
         });
     }
 
-    // --- CHIUSURA CLICK ESTERNO ---
+    // CHIUSURA MENU AL CLICK ESTERNO
     document.addEventListener('click', (event) => {
-        // Verifica se il menu è aperto e se l'elemento esiste
         if (navbar && navbar.classList.contains('show')) {
-            // Definiamo chi ha ricevuto il click
             const isClickInsideMenu = navbar.contains(event.target);
             const isClickOnBtn = menuBtn.contains(event.target);
 
-            // Se il click NON è nel menu E NON è sul bottone...
             if (!isClickInsideMenu && !isClickOnBtn) {
-                // ... Chiudi il menu
                 navbar.classList.remove('show');
                 menuBtn.classList.remove('fa-times');
             }
@@ -57,9 +49,9 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    //  4. GESTIONE FORM LOGIN/REGISTRAZIONE
-    if (userBtn && userForm) {
-        userBtn.onclick = () => {
+    //  4. GESTIONE FORM LOGIN (Apre il popup se clicchi su Accedi)
+    if (loginBtn && userForm) {
+        loginBtn.onclick = () => {
             userForm.classList.add("active");
             if(loginFormContainer) loginFormContainer.style.display = "block";
             if(registerFormContainer) registerFormContainer.style.display = "none";
@@ -69,10 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (closeBtn && userForm) {
         closeBtn.onclick = () => userForm.classList.remove("active");
     }
-
-    // Gestione bottoni extra (se presenti)
-    if (loginBtn && userForm) loginBtn.onclick = () => userForm.classList.toggle('active');
-    if (closeLoginBtn && userForm) closeLoginBtn.onclick = () => userForm.classList.remove('active');
 
     //  5. SWITCH LOGIN / REGISTRAZIONE
     if (showRegisterLink && showLoginLink && loginFormContainer && registerFormContainer) {
@@ -113,13 +101,10 @@ document.addEventListener("DOMContentLoaded", () => {
     //  8. EFFETTO SCROLL HEADER
     const handleScroll = () => {
         if (searchForm) searchForm.classList.remove('active');
-
-        // CHIUDE IL MENU MOBILE SE SI SCORRE LA PAGINA
         if (navbar && menuBtn) {
             navbar.classList.remove('show');
             menuBtn.classList.remove('fa-times');
         }
-
         if (window.scrollY > 93) {
             header2?.classList.add('active');
         } else {
@@ -136,44 +121,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const fadeOut = () => setTimeout(loader, 4000);
     fadeOut();
 
-    //  10. SWIPER (Carosello)
+    //  10. SWIPER
     const swiperContainer = document.querySelector('.featured-slider');
     if (typeof Swiper !== 'undefined' && swiperContainer) {
         const swiper = new Swiper('.featured-slider', {
             loop: true,
             spaceBetween: 20,
-            autoplay: {
-                delay: 4500,
-                disableOnInteraction: false,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
+            autoplay: { delay: 4500, disableOnInteraction: false },
+            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
             breakpoints: {
                 0: { slidesPerView: 1 },
                 768: { slidesPerView: 2 },
                 1024: { slidesPerView: 3 },
             },
-        });
-    }
-
-    //  11. CHECKOUT INDIRIZZO
-    const btnAggiungi = document.getElementById("btn-aggiungi-indirizzo");
-    const btnAnnulla = document.getElementById("btn-annulla-indirizzo");
-    const formAggiunta = document.getElementById("form-aggiungi-indirizzo");
-
-    if (btnAggiungi && formAggiunta) {
-        btnAggiungi.addEventListener("click", () => {
-            formAggiunta.style.display = "block";
-            btnAggiungi.style.display = "none";
-        });
-    }
-
-    if (btnAnnulla && formAggiunta) {
-        btnAnnulla.addEventListener("click", () => {
-            formAggiunta.style.display = "none";
-            btnAggiungi.style.display = "block";
         });
     }
 });
