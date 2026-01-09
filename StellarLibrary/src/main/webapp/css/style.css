@@ -1,5 +1,5 @@
 /* ====================================================
-   STELLAR LIBRARY - STILE COMPLETO (MASTER FINAL)
+   STELLAR LIBRARY - STILE COMPLETO (FINAL STABLE)
    ==================================================== */
 
 /*------------------------------------------------*/
@@ -70,7 +70,7 @@ section { padding: 5rem 9%; }
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: 2000; /* Altissimo per stare sopra a tutto */
+    z-index: 2000;
     font-family: 'Segoe UI', sans-serif;
 }
 
@@ -200,26 +200,19 @@ section { padding: 5rem 9%; }
 .btn:hover { color: gold; }
 
 /*------------------------------------------------*/
-/*--- HEADER TOP (SIMMETRIA PERFETTA) ---*/
+/*--- HEADER TOP ---------------------------------*/
 /*------------------------------------------------*/
 .header .header-1 {
     background: #fff;
     padding: 1.5rem 9%;
-
-    /* GRIGLIA A 3 COLONNE RIGIDE */
     display: grid;
-    /* 1fr = Spazio Sinistro | minmax = Barra Centrale | 1fr = Spazio Destro */
     grid-template-columns: 1fr minmax(300px, 600px) 1fr;
-
     align-items: center;
     gap: 2rem;
-
-    /* Z-INDEX SUPERIORE ALLA BARRA BLU */
     position: relative;
     z-index: 1002;
 }
 
-/* 1. LOGO */
 .header .header-1 .logo {
     display: flex;
     align-items: center;
@@ -241,7 +234,6 @@ section { padding: 5rem 9%; }
     white-space: nowrap;
 }
 
-/* 2. SEARCH BAR (Centrata) */
 .header .header-1 .search-form {
     position: relative;
     width: 100%;
@@ -252,11 +244,8 @@ section { padding: 5rem 9%; }
     align-items: center;
     padding: 0 2rem;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-
-    /* Performance Fix */
     border: 2px solid transparent;
     transition: background-color 0.2s ease-out, box-shadow 0.2s ease-out, border-color 0.2s ease-out;
-
     justify-self: center;
 }
 
@@ -289,14 +278,12 @@ section { padding: 5rem 9%; }
 
 
 /* =======================================================
-   3. SEZIONE UTENTE (NUOVO STILE: ICONE DIRETTE)
+   SEZIONE UTENTE (ICONE)
    ======================================================= */
-/* Contenitore principale a destra */
 .user-actions-container {
-    justify-self: end; /* Spinge tutto a destra */
+    justify-self: end;
 }
 
-/* Bottone ACCEDI (Quando NON loggato) */
 .login-btn-pill {
     display: flex;
     align-items: center;
@@ -321,14 +308,12 @@ section { padding: 5rem 9%; }
     transform: translateY(-2px);
 }
 
-/* Wrapper quando LOGGATO (Nome + Icona Uscita) */
 .logged-in-wrapper {
     display: flex;
     align-items: center;
-    gap: 15px; /* Spazio tra nome e logout */
+    gap: 15px;
 }
 
-/* Pillola Nome Utente (Non cliccabile, solo info) */
 .user-info-pill {
     display: flex;
     align-items: center;
@@ -343,13 +328,12 @@ section { padding: 5rem 9%; }
 .user-info-pill i { font-size: 2rem; }
 .user-info-pill .user-name-text { font-size: 1.6rem; font-weight: 600; }
 
-/* Bottone Logout (Icona Rossa) */
 .logout-form-inline { margin: 0; padding: 0; }
 
 .logout-icon-btn {
     background: transparent;
     border: none;
-    color: #d32f2f; /* Rosso */
+    color: #d32f2f;
     font-size: 2.2rem;
     cursor: pointer;
     padding: 10px;
@@ -361,13 +345,13 @@ section { padding: 5rem 9%; }
 }
 
 .logout-icon-btn:hover {
-    background-color: #ffebee; /* Sfondo rosa chiaro all'hover */
+    background-color: #ffebee;
     transform: scale(1.1);
 }
 
 
 /*------------------------------------------------*/
-/*--- HEADER BOTTOM (MENU CENTRATO) ---*/
+/*--- HEADER BOTTOM (MENU) -----------------------*/
 /*------------------------------------------------*/
 .header .header-2 {
     background: var(--blue);
@@ -375,8 +359,6 @@ section { padding: 5rem 9%; }
     justify-content: center;
     align-items: center;
     width: 100%;
-
-    /* Livello inferiore alla barra bianca */
     position: relative;
     z-index: 1001;
 }
@@ -406,65 +388,96 @@ section { padding: 5rem 9%; }
     cursor: pointer;
 }
 
-/* Sticky Header */
 .header .header-2.active {
     position: fixed;
     top: 0; left: 0; right: 0;
     z-index: 1000;
 }
 
-
-/* ========================================================
-   BREAKPOINT INTERMEDIO (LAPTOP/TABLET) - 1439px
-   ======================================================== */
 @media (max-width: 1439px) {
-    /* Nasconde la scritta per mantenere la simmetria */
     .header .header-1 .logo span { display: none; }
 }
 
 
 /*------------------------------------------------*/
-/*------------ SEZIONE ADMIN MENU ----------------*/
+/*------- SEZIONE ADMIN MENU (DESKTOP) -----------*/
 /*------------------------------------------------*/
 .dropdown2 {
     position: relative;
     display: inline-block;
 }
 
-.dropdown2 a.dropbtn {
+/* FIX: CENTRATURA PERFETTA FRECCIA */
+.dropdown2 .dropbtn {
     color: white;
-    padding: 10px 20px;
+    padding: 1.2rem 2rem;
     text-decoration: none;
     transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centra orizzontalmente */
+    gap: 10px;
 }
 
-.dropdown2 a.dropbtn:hover { color: #ffd700; }
+.dropdown2 .dropbtn:hover { color: #ffd700; }
 
+.dropdown2 .dropbtn i {
+    font-size: 1.4rem;
+    margin-top: 2px;
+    transition: transform 0.3s ease;
+}
+
+.dropdown2:hover .dropbtn i {
+    transform: rotate(180deg);
+}
+
+/* FIX: LINEE BIANCHE */
 .dropdown2-content {
-    display: none;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
     position: absolute;
     background-color: #001E6C;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
     border-radius: 4px;
-    min-width: 180px;
+    border-top: 3px solid #ffd700;
+    min-width: 200px;
     z-index: 10;
-    top: 100%; left: 0;
-    overflow: hidden;
+
+    padding: 0;        /* IMPORTANTE */
+    overflow: hidden;  /* IMPORTANTE */
+
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    display: block;
+}
+
+.dropdown2:hover .dropdown2-content {
+    top: 100%;
+    opacity: 1;
+    visibility: visible;
 }
 
 .dropdown2-content a {
     color: #f0f0f0;
-    padding: 12px 16px;
+    padding: 14px 16px;
     display: block;
+    width: 100%;       /* IMPORTANTE */
     text-decoration: none;
-    font-size: 1.4rem;
-    border-bottom: 1px solid #f0f0f0;
-    transition: background 0.2s, padding-left 0.2s;
+    font-size: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    transition: background 0.2s, color 0.2s;
+    margin: 0;
 }
 
 .dropdown2-content a:last-child { border-bottom: none; }
-.dropdown2-content a:hover { color: #ffd700; }
-.dropdown2:hover .dropdown2-content { display: block; }
+
+.dropdown2-content a:hover {
+    color: #ffd700;
+    background-color: rgba(255, 255, 255, 0.1);
+}
 
 
 /*------------------------------------------------*/
@@ -503,7 +516,6 @@ section { padding: 5rem 9%; }
     line-height: 1.8;
 }
 
-/* Media Queries Home */
 @media (max-width: 768px) {
     .home .row {
         flex-direction: column;
@@ -718,8 +730,6 @@ section { padding: 5rem 9%; }
 /*------------------------------------------------*/
 /*--------- PAGINA CATALOGO (FIXED MOBILE) -------*/
 /*------------------------------------------------*/
-
-/* 1. CONTENITORE PRINCIPALE (Mobile First) */
 .catalogo-section {
     padding: 2rem 5%;
     min-height: 100vh;
@@ -727,14 +737,13 @@ section { padding: 5rem 9%; }
 
 .catalogo-container {
     display: flex;
-    flex-direction: column; /* I filtri stanno sopra, i libri sotto */
+    flex-direction: column;
     gap: 3rem;
 }
 
-/* 2. SIDEBAR FILTRI (Design Pulito Verticale) */
 .filtri {
     width: 100%;
-    background: #f8f9fa; /* Grigio chiarissimo elegante */
+    background: #f8f9fa;
     padding: 2.5rem;
     border-radius: 12px;
     border: 1px solid rgba(0,0,0,0.05);
@@ -750,14 +759,12 @@ section { padding: 5rem 9%; }
     padding-bottom: 1rem;
 }
 
-/* Form Layout: PILA VERTICALE */
 .filtri form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-/* Stile Etichette */
 .filtri label {
     display: block;
     font-size: 1.5rem;
@@ -766,7 +773,6 @@ section { padding: 5rem 9%; }
     font-weight: 600;
 }
 
-/* Stile Input e Select */
 .filtri select,
 .filtri input[type="text"],
 .filtri input[type="number"] {
@@ -784,14 +790,12 @@ section { padding: 5rem 9%; }
 .filtri select:focus,
 .filtri input:focus { border-color: var(--blue); }
 
-/* Input Range (Slider) */
 .filtri input[type="range"] {
     width: 100%;
     margin: 1rem 0;
     cursor: pointer;
 }
 
-/* Bottone Applica */
 .filtri .btn {
     width: 100%;
     margin-top: 1.5rem;
@@ -808,16 +812,13 @@ section { padding: 5rem 9%; }
 
 .filtri .btn:hover { background-color: #0e124f; }
 
-/* 3. GRIGLIA LIBRI (Responsive) */
 .risultati-libri {
     width: 100%;
     display: grid;
-    /* Mobile: crea colonne automatiche (minimo 140px larghezza) */
     grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     gap: 1.5rem;
 }
 
-/* Card Libro */
 .libro-box {
     padding: 1.5rem;
     border: 1px solid #f0f0f0;
@@ -862,71 +863,221 @@ section { padding: 5rem 9%; }
     margin-bottom: 1rem;
 }
 
-/* Bottone dettagli libro */
 .libro-box .btn {
     margin-top: auto;
     padding: 0.8rem 1.5rem;
     font-size: 1.4rem;
 }
 
-
-/* --- CATALOGO DESKTOP (Min-width: 968px) --- */
 @media (min-width: 968px) {
     .catalogo-section { padding: 4rem 9%; }
-
     .catalogo-container {
-        flex-direction: row; /* Torna orizzontale */
+        flex-direction: row;
         align-items: flex-start;
         gap: 4rem;
     }
-
-    /* Sidebar laterale fissa */
     .filtri {
-        flex: 0 0 280px; /* Larghezza fissa */
+        flex: 0 0 280px;
         max-width: 280px;
         position: sticky;
-        top: 120px;       /* Distanza dall'header */
+        top: 120px;
     }
-
-    /* Griglia Libri più larga su Desktop */
     .risultati-libri {
         flex: 1;
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
         gap: 2.5rem;
     }
-
     .libro-box img { height: 240px; }
 }
 
 /*------------------------------------------------*/
 /*------------ PAGINA ORDINI UTENTI --------------*/
 /*------------------------------------------------*/
-body.ordiniUtenti .ordini-container { padding: 40px 80px; }
+body.ordiniUtenti {
+    background-color: #f4f6f8;
+}
 
+body.ordiniUtenti .ordini-container {
+    padding: 40px 5%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Titolo Pagina */
+body.ordiniUtenti .page-title {
+    font-size: 2.8rem;
+    color: var(--blue);
+    margin-bottom: 30px;
+    text-align: center;
+    font-weight: 700;
+}
+
+/* --- TABELLA DESKTOP (PC) --- */
 body.ordiniUtenti table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background-color: #fff;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    border-collapse: separate;
+    border-spacing: 0 10px; /* Spazio tra le righe */
 }
 
-body.ordiniUtenti th,
-body.ordiniUtenti td {
-    padding: 14px 16px;
-    border-bottom: 1px solid #ddd;
+body.ordiniUtenti thead th {
+    color: #888;
     font-size: 1.4rem;
-}
-
-body.ordiniUtenti th {
-    background-color: #001E6C;
-    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 10px 20px;
+    border: none;
     text-align: left;
+    font-weight: 600;
 }
 
-body.ordiniUtenti tr:hover { background-color: #f1f1f1; }
-body.ordiniUtenti h1 { font-size: 2.8rem; color: #001E6C; margin-bottom: 20px; text-align: center !important; }
-body.ordiniUtenti p { font-size: 2rem; color: #001E6C; margin-bottom: 20px; text-align: center !important; }
+body.ordiniUtenti tbody tr {
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    transition: transform 0.2s ease;
+}
+
+body.ordiniUtenti tbody tr:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+body.ordiniUtenti tbody td {
+    padding: 20px;
+    color: #444;
+    font-size: 1.5rem;
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 1px solid #f0f0f0;
+    vertical-align: middle;
+}
+
+/* Arrotondamento bordi riga Desktop */
+body.ordiniUtenti tbody td:first-child {
+    border-left: 1px solid #f0f0f0;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    font-weight: bold;
+    color: var(--blue);
+}
+
+body.ordiniUtenti tbody td:last-child {
+    border-right: 1px solid #f0f0f0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+/* Bottone Dettagli */
+.btn-dettagli {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background-color: rgba(25, 25, 112, 0.08);
+    color: var(--blue);
+    border-radius: 50px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.btn-dettagli:hover {
+    background-color: var(--blue);
+    color: #fff;
+}
+
+/* --- MOBILE RESPONSIVE (CARD VIEW) --- */
+@media (max-width: 768px) {
+
+    body.ordiniUtenti .ordini-container { padding: 20px 15px; }
+
+    /* Nascondi header tabella classica */
+    body.ordiniUtenti thead { display: none; }
+
+    /* Trasforma elementi in blocchi */
+    body.ordiniUtenti table, body.ordiniUtenti tbody,
+    body.ordiniUtenti tr, body.ordiniUtenti td {
+        display: block;
+        width: 100%;
+    }
+
+    body.ordiniUtenti tbody tr {
+        background: #fff;
+        margin-bottom: 25px;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        border: 1px solid #eee;
+        overflow: hidden;
+    }
+
+    /* HEADER DELLA CARD (ID Ordine) */
+    body.ordiniUtenti tbody td:first-child {
+        background-color: var(--blue);
+        color: #fff;
+        padding: 15px 20px;
+        font-size: 1.6rem;
+        border: none;
+        border-radius: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    /* Aggiunge etichetta "ORDINE" prima del numero */
+    body.ordiniUtenti tbody td:first-child::before {
+        content: 'ORDINE';
+        font-weight: 400;
+        font-size: 1.2rem;
+        opacity: 0.8;
+    }
+
+    /* CELLE DATI */
+    body.ordiniUtenti tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        border-bottom: 1px solid #f5f5f5;
+        text-align: right;
+    }
+
+    /* LABEL (Es. Data, Utente...) */
+    body.ordiniUtenti tbody td::before {
+        content: attr(data-label);
+        color: #999;
+        font-weight: 600;
+        font-size: 1.3rem;
+        text-transform: uppercase;
+        text-align: left;
+    }
+
+    /* STILI SPECIALI PER I DATI */
+    body.ordiniUtenti tbody td[data-label="Totale"] {
+        color: #2e7d32; /* Verde soldi */
+        font-weight: 800;
+        font-size: 1.8rem;
+    }
+
+    body.ordiniUtenti tbody td[data-label="Stato"] {
+        color: var(--blue);
+        font-weight: 600;
+    }
+
+    /* Ultima cella (Bottone) */
+    body.ordiniUtenti tbody td:last-child {
+        border-bottom: none;
+        padding: 20px;
+        justify-content: center;
+        background-color: #fafafa;
+    }
+
+    body.ordiniUtenti .btn-dettagli {
+        width: 100%;
+        justify-content: center;
+        background-color: var(--blue);
+        color: white;
+        padding: 12px;
+    }
+}
 
 /*------------------------------------------------*/
 /*---------- PAGINA RECENSIONI UTENTI ------------*/
@@ -938,46 +1089,263 @@ body.RecensioniUtenti .recensioni-container {
     border-radius: 8px;
     padding: 30px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    font-family: 'Segoe UI', sans-serif;
 }
-body.RecensioniUtenti .recensioni-container h1 { text-align: center; margin-bottom: 30px; color: #333; }
-body.RecensioniUtenti table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-body.RecensioniUtenti table thead { background-color: #f4f4f4; color: #444; }
-body.RecensioniUtenti table th, body.RecensioniUtenti table td {
-    padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; font-size: 14px;
+
+body.RecensioniUtenti h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--blue);
+    font-size: 2.5rem;
 }
-body.RecensioniUtenti table tbody tr:hover { background-color: #f9f9f9; }
-body.RecensioniUtenti button {
-    background-color: #e74c3c; color: white; border: none; padding: 6px 12px;
-    border-radius: 4px; cursor: pointer; font-size: 13px; transition: background 0.2s;
+
+/* --- VERSIONE DESKTOP (TABELLA CLASSICA) --- */
+body.RecensioniUtenti table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    table-layout: fixed; /* Mantiene larghezze fisse su desktop */
 }
-body.RecensioniUtenti button:hover { background-color: #c0392b; }
+
+body.RecensioniUtenti table thead {
+    background-color: #f4f4f4;
+    color: #444;
+    border-bottom: 2px solid #ddd;
+}
+
+body.RecensioniUtenti table th,
+body.RecensioniUtenti table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 1.4rem;
+    vertical-align: middle;
+}
+
+/* Gestione Testi Lunghi Desktop */
+body.RecensioniUtenti .text-col {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: help;
+}
+
+/* Bottone Elimina */
+.btn-delete {
+    background-color: transparent;
+    color: #e74c3c;
+    border: 1px solid #e74c3c;
+    padding: 6px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+    background-color: #e74c3c;
+    color: white;
+}
+
+/* ----------------------------------------------- */
+/* VERSIONE MOBILE (CARD FLEXBOX - NO SOVRAPPOSIZIONI) */
+/* ----------------------------------------------- */
+@media (max-width: 768px) {
+
+    /* 1. Trasforma tabella in blocchi */
+    body.RecensioniUtenti table,
+    body.RecensioniUtenti thead,
+    body.RecensioniUtenti tbody,
+    body.RecensioniUtenti th,
+    body.RecensioniUtenti td,
+    body.RecensioniUtenti tr {
+        display: block;
+    }
+
+    /* 2. Nascondi intestazione tabella */
+    body.RecensioniUtenti thead tr {
+        display: none;
+    }
+
+    /* 3. Stile della "Scheda" (ex riga) */
+    body.RecensioniUtenti tr {
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        background: #fff;
+        overflow: hidden;
+    }
+
+    /* 4. Stile delle Celle con FLEXBOX */
+    body.RecensioniUtenti td {
+        display: flex;              /* Chiave della fix: Flexbox */
+        justify-content: space-between; /* Spinge Label a SX e Contenuto a DX */
+        align-items: flex-start;    /* Allinea in alto */
+
+        border: none;
+        border-bottom: 1px solid #eee;
+        padding: 12px 15px;
+        text-align: right;          /* Testo contenuto allineato a destra */
+
+        /* Reset proprietà desktop */
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        max-width: none !important;
+    }
+
+    body.RecensioniUtenti td:last-child {
+        border-bottom: none;
+        justify-content: center; /* Centra il bottone elimina */
+        padding: 20px;
+        background-color: #f9f9f9;
+    }
+
+    /* 5. Etichetta (Label) a Sinistra */
+    body.RecensioniUtenti td:before {
+        content: attr(data-label); /* Prende testo dal JSP */
+        font-weight: 700;
+        color: var(--blue);
+        text-align: left;
+
+        /* Dimensioni fisse per la label */
+        flex-basis: 35%; /* Occupa il 35% della larghezza */
+        flex-shrink: 0;  /* Non si restringe mai */
+        margin-right: 15px; /* Spazio di sicurezza dal contenuto */
+
+        position: static; /* Rimuove absolute positioning che causava sovrapposizione */
+    }
+
+    /* Gestione contenuto lungo (URL o testi) su mobile */
+    body.RecensioniUtenti td > * {
+        flex-basis: 60%; /* Il contenuto prende il resto */
+        word-break: break-word; /* Spezza le parole lunghe/link */
+        text-align: right;
+    }
+
+    /* Nasconde label per l'ultima riga (Azioni) per pulizia */
+    body.RecensioniUtenti td:last-child:before {
+        display: none;
+    }
+}
 
 /*------------------------------------------------*/
 /*------------ PAGINA AGGIUNTA LIBRO -------------*/
 /*------------------------------------------------*/
-body.AggiuntaLibro { background-color: #f9f9f9; font-family: 'Segoe UI', sans-serif; }
+body.AggiuntaLibro {
+    background-color: #f4f6f8;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Contenitore stile "Card" centrata */
 body.AggiuntaLibro .form-container {
-    width: 60%; margin: 50px auto; background: #fff;
-    padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    max-width: 900px;
+    width: 90%;
+    margin: 40px auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
-body.AggiuntaLibro h1 { text-align: center; color: #333; margin-bottom: 30px; }
-body.AggiuntaLibro form { display: flex; flex-wrap: wrap; gap: 20px; }
-body.AggiuntaLibro .form-group { flex: 1 1 45%; display: flex; flex-direction: column; }
-body.AggiuntaLibro .form-group.full { flex: 1 1 100%; }
-body.AggiuntaLibro label { font-weight: 500; margin-bottom: 5px; color: #444; }
-body.AggiuntaLibro input, body.AggiuntaLibro select {
-    padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 14px; transition: 0.2s;
+
+body.AggiuntaLibro .form-container h1 {
+    text-align: center;
+    color: var(--blue);
+    margin-bottom: 30px;
+    font-size: 2.8rem;
+    font-weight: 700;
 }
-body.AggiuntaLibro input:focus, body.AggiuntaLibro select:focus { border-color: #2980b9; }
-body.AggiuntaLibro button {
-    width: 100%; background-color: #2980b9; color: white; padding: 12px;
-    font-size: 16px; border: none; border-radius: 5px; cursor: pointer; transition: 0.2s;
+
+/* GRIGLIA FORM (2 Colonne su Desktop) */
+body.AggiuntaLibro .form-container form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
 }
-body.AggiuntaLibro button:hover { background-color: #1f5f8b; }
-body.AggiuntaLibro .success {
-    text-align: center; background-color: #dff0d8; padding: 10px;
-    border-radius: 5px; color: #3c763d; margin-bottom: 20px;
+
+body.AggiuntaLibro .form-container .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+body.AggiuntaLibro .form-container .form-group.full {
+    grid-column: 1 / -1;
+}
+
+body.AggiuntaLibro .form-container label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--black);
+    font-size: 1.5rem;
+}
+
+/* --- FIX NAVBAR: STILE SOLO AGLI INPUT DEL FORM --- */
+body.AggiuntaLibro .form-container input,
+body.AggiuntaLibro .form-container select {
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 2px solid #eee;
+    font-size: 1.5rem;
+    background-color: #fbfbfb;
+    transition: all 0.3s ease;
+    color: #333;
+    width: 100%;
+}
+
+body.AggiuntaLibro .form-container input:focus,
+body.AggiuntaLibro .form-container select:focus {
+    border-color: var(--blue);
+    background-color: #fff;
+    box-shadow: 0 0 0 4px rgba(25, 25, 112, 0.1);
+}
+
+/* --- FIX NAVBAR: STILE SOLO AL BOTTONE DEL FORM --- */
+body.AggiuntaLibro .form-container button {
+    width: 100%;
+    background-color: var(--blue);
+    color: white;
+    padding: 15px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+body.AggiuntaLibro .form-container button:hover {
+    background-color: #0e124f;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(25, 25, 112, 0.3);
+}
+
+body.AggiuntaLibro .form-container .success {
+    text-align: center;
+    background-color: #d1e7dd;
+    padding: 15px;
+    border-radius: 8px;
+    color: #0f5132;
+    margin-bottom: 20px;
+    border: 1px solid #badbcc;
+    font-size: 1.5rem;
+}
+
+/* RESPONSIVE MOBILE */
+@media (max-width: 768px) {
+    body.AggiuntaLibro .form-container form {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    body.AggiuntaLibro .form-container {
+        padding: 20px;
+        margin: 20px auto;
+    }
 }
 
 
@@ -986,7 +1354,7 @@ body.AggiuntaLibro .success {
    ======================================================== */
 @media (max-width: 768px) {
 
-    /* --- 1. HEADER E LOGO MOBILE --- */
+    /* 1. HEADER E LOGO MOBILE */
     .header .header-1 {
         display: flex;
         flex-wrap: nowrap;
@@ -1013,8 +1381,7 @@ body.AggiuntaLibro .success {
     }
     .header .header-1 .search-form input { font-size: 1.4rem; }
 
-    /* --- GESTIONE UTENTE MOBILE --- */
-    /* ACCEDI MOBILE: Solo icona */
+    /* GESTIONE UTENTE MOBILE */
     .login-btn-pill {
         border: none;
         padding: 0;
@@ -1027,25 +1394,15 @@ body.AggiuntaLibro .success {
         background: transparent; color: var(--black); box-shadow: none; transform: none;
     }
 
-    /* LOGGATO MOBILE: Solo icona logout grande */
-    .logged-in-wrapper {
-        gap: 10px;
-    }
+    .logged-in-wrapper { gap: 10px; }
     .user-info-pill {
-        padding: 0;
-        background: transparent;
-        border: none;
-        width: auto;
+        padding: 0; background: transparent; border: none; width: auto;
     }
     .user-info-pill .user-name-text { display: none; }
     .user-info-pill i { font-size: 2.4rem; color: var(--blue); }
+    .logout-icon-btn { font-size: 2.4rem; padding: 5px; }
 
-    .logout-icon-btn {
-        font-size: 2.4rem; /* Icona logout più grande su mobile */
-        padding: 5px;
-    }
-
-    /* --- 2. MENU HAMBURGER E BARRA BLU --- */
+    /* 2. MENU HAMBURGER */
     #menu-btn {
         display: block;
         font-size: 2.5rem;
@@ -1067,15 +1424,16 @@ body.AggiuntaLibro .success {
         min-height: 50px;
     }
 
-    /* --- 3. MENU DROPDOWN BLU (SQUADRATO) --- */
+    /* 3. FIX MENU SFARFALLIO (SOLUZIONE DEFINITIVA) */
     .header .header-2 .navbar {
-        display: none;
+        display: none; /* NASCOSTO DI DEFAULT PER EVITARE SFARFALLIO */
         flex-direction: column;
-        align-items: stretch; /* Allarga i pulsanti */
+        align-items: stretch;
         justify-content: flex-start;
+
         position: absolute;
-        top: 100%;
-        left: 0; right: 0;
+        top: 100%; left: 0; right: 0;
+
         background: #191970;
         border-radius: 0;
         box-shadow: 0 15px 40px rgba(0,0,0,0.4);
@@ -1084,7 +1442,23 @@ body.AggiuntaLibro .success {
         z-index: 9999;
         border-top: 1px solid rgba(255,215,0,0.3);
     }
-    .header .header-2 .navbar.show { display: flex; }
+
+    .header .header-2 .navbar.active {
+        display: flex; /* APPARE SOLO QUANDO ATTIVO */
+        animation: fadeInDown 0.4s ease forwards;
+    }
+
+    /* Animazione fluida di comparsa */
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
     .header .header-2 .navbar a {
         display: block;
@@ -1098,11 +1472,48 @@ body.AggiuntaLibro .success {
         text-align: center;
         transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
+
     .header .header-2 .navbar a:hover {
         background-color: #ffd700;
         color: #191970;
         transform: scale(1.02);
         box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    /* 4. DASHBOARD SUBMENU IN MOBILE */
+    .dropdown2 {
+        width: 100%;
+        display: block;
+        text-align: center;
+    }
+
+    .dropdown2 a.dropbtn {
+        justify-content: center;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .dropdown2-content {
+        position: static;
+        transform: none;
+        width: 100%;
+        opacity: 1;
+        visibility: visible;
+        display: none;
+        background-color: rgba(0, 0, 0, 0.2);
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        border-top: none;
+        padding: 0;
+    }
+
+    .dropdown2:hover .dropdown2-content {
+        display: block;
+    }
+
+    .dropdown2-content a {
+        padding-left: 0;
+        text-align: center;
+        background: transparent;
+        font-size: 1.6rem;
     }
 
     html { font-size: 55%; }

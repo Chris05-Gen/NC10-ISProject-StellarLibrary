@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 <style>
   .sr-only {
     position: absolute !important;
@@ -13,11 +15,7 @@
     clip: rect(0,0,0,0) !important;
     border: 0 !important;
   }
-
-  /* Assicuriamo che il form sia sopra tutto */
-  .user-form-container {
-    z-index: 10000;
-  }
+  .user-form-container { z-index: 10000; }
 </style>
 
 <c:if test="${not empty sessionScope.successo}">
@@ -43,12 +41,9 @@
     <form id="login-form" action="LoginServlet" method="post" class="login-form">
       <h3>Accedi</h3>
       <label for="email-login" class="sr-only">Email</label>
-      <input type="email" id="email-login" name="email" placeholder="Email" required class="box"
-             pattern="^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$">
-
+      <input type="email" id="email-login" name="email" placeholder="Email" required class="box" pattern="^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$">
       <label for="password-login" class="sr-only">Password</label>
       <input type="password" id="password-login" name="password" placeholder="Password" required class="box" minlength="6">
-
       <input type="submit" value="Login" class="btn">
       <p style="text-align:center; margin-top: 10px;">
         Non hai un account? <a href="#" id="link-to-register">Registrati</a>
@@ -63,17 +58,12 @@
       <h3>Registrati</h3>
       <label for="nome-reg" class="sr-only">Nome</label>
       <input type="text" id="nome-reg" name="nome" placeholder="Nome" required class="box">
-
       <label for="cognome-reg" class="sr-only">Cognome</label>
       <input type="text" id="cognome-reg" name="cognome" placeholder="Cognome" required class="box">
-
       <label for="email-reg" class="sr-only">Email</label>
-      <input type="email" id="email-reg" name="email" placeholder="Email" required class="box"
-             pattern="^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$">
-
+      <input type="email" id="email-reg" name="email" placeholder="Email" required class="box" pattern="^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$">
       <label for="password-reg" class="sr-only">Password</label>
       <input type="password" id="password-reg" name="password" placeholder="Password" required class="box" minlength="6">
-
       <input type="submit" value="Registrati" class="btn">
       <p style="text-align:center; margin-top: 10px;">
         Hai già un account? <a href="#" id="link-to-login">Accedi</a>
@@ -97,14 +87,12 @@
 
     <div class="user-actions-container">
       <c:choose>
-        <%-- UTENTE LOGGATO --%>
         <c:when test="${not empty sessionScope.utente}">
           <div class="logged-in-wrapper">
             <div class="user-info-pill">
               <i class="fas fa-user-circle"></i>
               <span class="user-name-text">${sessionScope.utente.nome}</span>
             </div>
-
             <form action="LogoutServlet" method="post" class="logout-form-inline">
               <button type="submit" class="logout-icon-btn" title="Esci">
                 <i class="fas fa-sign-out-alt"></i>
@@ -112,8 +100,6 @@
             </form>
           </div>
         </c:when>
-
-        <%-- UTENTE OSPITE (Mostra Tasto Accedi) --%>
         <c:otherwise>
           <div id="login-btn-trigger" class="login-btn-pill" style="cursor: pointer;">
             <i class="fas fa-user"></i>
@@ -126,6 +112,7 @@
 
   <div class="header-2">
     <div id="menu-btn" class="fas fa-bars"></div>
+
     <nav class="navbar">
       <a href="./">Home</a>
 
@@ -138,7 +125,7 @@
 
       <c:if test="${sessionScope.utente.tipo == 'Admin'}">
         <div class="dropdown2">
-          <a href="#" class="dropbtn">Dashboard</a>
+          <a href="#" class="dropbtn">Dashboard <i class="fas fa-caret-down"></i></a>
           <div class="dropdown2-content">
             <a href="OrdiniUtentiServlet">Ordini utenti</a>
             <a href="GestioneRecensioniServlet">Recensioni</a>
@@ -153,45 +140,74 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
 
-    // Elementi
+    /* -----------------------------------------------
+       1. GESTIONE MENU HAMBURGER E NAVBAR
+       ----------------------------------------------- */
+    const menuBtn = document.querySelector('#menu-btn');
+    const navbar = document.querySelector('.header .header-2 .navbar');
+
+    if(menuBtn && navbar) {
+      // Toggle menu al click dell'hamburger
+      menuBtn.onclick = () => {
+        menuBtn.classList.toggle('fa-times'); // Cambia icona in X
+        navbar.classList.toggle('active');    // Mostra/Nascondi menu
+      }
+
+      // Chiudi menu quando si clicca un link qualsiasi dentro la navbar
+      // (Include i link della dashboard)
+      navbar.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          // Se è il trigger del dropdown (Dashboard), non chiudere subito su mobile
+          // altrimenti non si vede il sottomenu
+          if(link.classList.contains('dropbtn') && window.innerWidth <= 768) {
+            return;
+          }
+
+          menuBtn.classList.remove('fa-times');
+          navbar.classList.remove('active');
+        });
+      });
+    }
+
+    // Chiudi menu quando si scrolla la pagina
+    window.onscroll = () => {
+      if(menuBtn) menuBtn.classList.remove('fa-times');
+      if(navbar) navbar.classList.remove('active');
+    }
+
+    /* -----------------------------------------------
+       2. GESTIONE MODAL LOGIN (Esistente)
+       ----------------------------------------------- */
     const loginBtn = document.getElementById('login-btn-trigger');
     const modal = document.getElementById('user-form-modal');
     const closeBtn = document.getElementById('close-login-btn');
-
-    // Link switch form
     const linkToRegister = document.getElementById('link-to-register');
     const linkToLogin = document.getElementById('link-to-login');
-
-    // Forms
     const loginForm = document.getElementById('login-form');
     const registerForm = document.getElementById('register-form');
 
-    // APRI MODAL
     if(loginBtn) {
       loginBtn.onclick = () => {
-        modal.style.display = 'flex'; // Flex per centrare se il CSS lo prevede
-        document.body.style.overflow = 'hidden'; // Blocca scroll sfondo
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
       }
     }
 
-    // CHIUDI MODAL
     if(closeBtn) {
       closeBtn.onclick = () => {
         modal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Riattiva scroll
+        document.body.style.overflow = 'auto';
       }
     }
 
-    // SWITCH A REGISTRAZIONE
     if(linkToRegister) {
       linkToRegister.onclick = (e) => {
         e.preventDefault();
         loginForm.style.display = 'none';
-        registerForm.style.display = 'block'; // O 'flex' in base al tuo CSS
+        registerForm.style.display = 'block';
       }
     }
 
-    // SWITCH A LOGIN
     if(linkToLogin) {
       linkToLogin.onclick = (e) => {
         e.preventDefault();
@@ -200,7 +216,6 @@
       }
     }
 
-    // Chiudi cliccando fuori dal box
     window.onclick = (event) => {
       if (event.target == modal) {
         modal.style.display = "none";
